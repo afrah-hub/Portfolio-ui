@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!doctype html>
 <html lang="en">
   <head>
@@ -11,3 +12,401 @@
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Afrah Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"integrity="sha512-xh6UgQNE2Jv8JvQxqv0Qv1ZP4l7Qm4O3nC/0m7n1iH0uU8sO4Q2GxXH2m1Vw0KQ2l8pQ2y0f1K8pQhH7q7sBA=="crossorigin="anonymous"referrerpolicy="no-referrer"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      .container{
+        transition: transform 0.3s ease;
+      }
+        body{
+            scroll-behavior: smooth;
+            background:black;
+            
+        }
+        .hero{
+            height:100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .hero1{
+            font-size: 3rem;
+            font-weight:bold;
+        }
+        .hero-content{
+          transition: transform 0.3s ease;      
+        }
+        footer{
+            margin-top: auto;
+        }
+       .card {
+            border-radius: 40px;  
+             overflow: hidden;      
+            transition: all 0.4s ease;
+            width:350px; 
+            display: flex;
+            justify-content: center;
+        }
+
+       .card img {
+           border-radius: 40px 40px 0 0; 
+           transition: transform 0.4s ease;
+         }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.05);
+              box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+              background: #833AB4;
+
+              color:  #212529;
+         }
+         .hero-section {
+            background: var(--primary-gradient);
+            margin-top: 57px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.1);
+            pointer-events: none;
+        }
+        .hero-image {
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            object-fit: cover;
+            
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+        .hero-subtitle{
+          color: white;
+        }
+        .card:hover img {
+            transform: scale(1.1); 
+         }
+         .social-links{
+          color: azure;
+          display: flex;
+          justify-content: end;
+        gap: 36px;   
+      font-size: 30px; 
+    margin-right: 30px;
+      }
+      .social-links:hover{
+        color: white;
+      }
+      .social-links a:hover{
+        color: white;
+      }
+      .btn{
+        background-color: #833AB4;
+         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+          color:  #212529;
+      }
+      .btn:hover{
+        background-color: #ff00ea;
+      }
+      .nav-item{
+       transition:transform 0.3 ease;
+      }
+      .fade-up {
+       opacity: 0;
+      transform: translateY(40px);
+      animation: fadeUp 1.2s ease forwards;
+      }
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.hero-content {
+  opacity: 0;
+  transform: translateY(50px);
+  animation: heroFade 1.5s ease forwards;
+}
+@keyframes heroFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.hero-image {
+  opacity: 0;
+  transform: scale(0.8);
+  animation: imageZoom 1.5s ease forwards;
+}
+@keyframes imageZoom {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.card {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+.btn {
+  transition: all 0.3s ease;
+}
+        #contact-form {
+  width: 100%;
+  max-width: 500px; 
+}
+.btn:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(45deg, #833AB4, #ff00ea);
+  color: #fff;
+}
+
+    </style>
+</head>
+<body> 
+
+   <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" >
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="#">AFRAH KABEER</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#home">HOME</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#about">ABOUT</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#skills">SKILLS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#projects">PROJECTS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#contact">CONTACT</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+    <section id="home" class="hero-section">
+        <div class="container">
+   <div class="row align-items-center">
+        <div class="col-lg-6" data-aos="fade-right">
+                    <div class="hero-content">
+                        <h1 class="hero-title" style="color: #833AB4;">Hola!<br> I'm <br><strong><span style="color: #ff00ea;">Afrah</span></strong></h1>
+                        <p class="hero-subtitle">Aspiring Web Developer | Passionatte about coding</p>
+                        <p class="text-white mb-4">I am deeply passionate about coding and love turning ideas into reality through clean, efficient, and creative code. I enjoy learning new technologies, solving challenging problems, and constantly improving my skills to build better digital experiences.</p>
+                <div>
+                            <a href="#contact" class="btn btn-outline-light">Contact me</a>
+                        </div>
+            </div>
+                </div>
+                <div class="col-lg-6 text-center" data-aos="fade-right">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/dodaymessenger-2c64d.firebasestorage.app/o/profile_images%2Fafrah.jpeg?alt=media&token=942a43ec-5685-482d-90b0-758bb674bb37" alt="Afrah" class="hero-image">
+</div>
+            </div>
+            <div class="text-end mt-4" data-aos="fade-up" data-aos-delay="500" style="display: flex; justify-content: flex-start;">
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/afrah-tk-a3525a379/"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/afrah-hub"><i class="fab fa-github"></i></a>
+                    
+                    <a href="https://www.instagram.com/afrahbinthkabeer/"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+       </section>
+<section id="about" class="py-5 bg-dark text-white">
+  <div class="container">
+    <div class="row align-items-center">
+
+      <div class="col-md-4 text-center mb-4 mb-md-0">
+        <img src="https://firebasestorage.googleapis.com/v0/b/dodaymessenger-2c64d.firebasestorage.app/o/profile_images%2Fafrah2.jpeg?alt=media&token=5d70ecd0-0052-413b-8b2f-35a5a5749232" alt="Afrah Kabeer" class="img-fluid rounded-circle shadow" style="max-width: 250px;">
+      </div>
+      
+      <div class="col-md-8">
+        <h2 class="mb-3">About Me</h2>
+        <p>
+          Hi, I'm <strong>Afrah Kabeer</strong> 👋. I started my journey with a background in 
+          <strong>Commerce with Computer Application</strong>, which gave me a strong base 
+          in logical thinking and creativity. My curiosity for technology led me into the 
+          world of <strong>web development</strong>, where I'm currently learning 
+          <strong>JavaScript, HTML, CSS, and Bootstrap</strong>.
+        </p>
+        <p>
+          I am currently pursuing my coding journey at <strong>Bridgeon Solution</strong>, where I’m 
+          improving my skills through practical projects and continuous learning.
+        </p>
+        <p>
+          I enjoy creating simple, clean, and responsive websites while experimenting with 
+          different layouts and designs. Right now, my main focus is becoming confident in 
+          <strong>front-end development</strong>, and I aim to learn frameworks like React 
+          and eventually move into <strong>full-stack development</strong>.
+        </p>
+        <p>
+          Beyond coding, I believe in <strong>continuous learning</strong> and love solving 
+          challenges that help me grow. My long-term goal is to become a skilled developer 
+          who can contribute to meaningful projects in the tech industry.
+        </p>
+        <a href="#projects" class="btn btn-primary mt-3">View My Projects</a>
+      </div>
+    </div>
+  </div>
+</section>
+    <section id="skills" class=" bg-dark text-white p-5">
+        <div class="container">
+            <h2 class="text-center mb-4">My Skills</h2>
+            <div class="row">
+            <div class="col-lg-6 mx-auto">
+                <p>HTML <i class="fa-brands fa-html5 icon html" style="font-size: 20px; color: #833AB4;"></i> </p>
+                <div class="progress mb-3">
+                    <div class="progress-bar " style="width: 90%; background: linear-gradient(#833AB4 50%, #ff00ea) ">95%</div>
+                </div>
+                <p>CSS<i class="fa-brands fa-css3-alt icon css" aria-hidden="true" style="font-size: 20px; color: aquamarine"></i></p>
+                <div class="progress mb-3"></p>
+                    <div class="progress-bar bg-success" style="width: 80%; background: linear-gradient(#833AB4 50%, #ff00ea)">90%</div>
+                </div>
+                <p>JAVASCRIPT<i class="fa-brands fa-js icon js" style="font-size: 20px; color:yellow"></i></p>
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-success" style="width: 60%; background: linear-gradient(#833AB4 50%, #ff00ea)" >70%</div>
+                </div>  
+            </div>
+        </div>
+    </div>
+    </section>
+    <section id="projects" class="py-5 text-light bg-dark " >
+  <div class="container">
+    <h2 class="text-center mb-4">My Projects</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card shadow h-100">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpySUPhqBCEXZ0CfcZypAfOuLcxQqtU1KZjeD9CGPafOqQrsI54zc9tVMN7tAnwcbgzlY&usqp=CAU"class="card-img-top"alt="booking.com">
+          <div class="card-body text-dark">
+            <h5 class="card-title">Booking.com </h5>
+            <p class="card-text">
+              A clone of the <strong>Booking.com Website</strong> created using HTML and CSS.  
+              This project helped me to understand layouts and forms.
+            </p>  
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card shadow h-100">
+            <img src="https://forum.muffingroup.com/betheme/uploads/951/J5WYOXLOB999.png"class="card-img-top"alt="w3">
+          <div class="card-body text-dark">
+            <h5 class="card-title">W3Schools Navigation Bar</h5>
+            <p class="card-text">
+              Recreated the navigation bar of <strong>W3Schools</strong> using HTML and CSS.  
+              This helped me practice navbar design and styling.
+            </p>
+          </div>
+        </div>
+      </div>
+       <div class="col-md-4">
+        <div class="card shadow h-100">
+            <img src="https://firebasestorage.googleapis.com/v0/b/dodaymessenger-2c64d.firebasestorage.app/o/profile_images%2Fafrah3.jpeg?alt=media&token=a2cd7525-1086-4cec-a501-6b66237866b2"class="card-img-top"alt="w3">
+          <div class="card-body text-dark">
+            <h5 class="card-title">my portfolio</h5>
+            <p class="card-text">
+              Responsive personal<strong>Portfolio</strong>build with HTML, CSS , bootstrap and Javascript  
+              This helped me practice and improve my web developing skills.
+            </p>
+          </div>
+        </div>
+    </div>
+  </div>
+<section id="contact" class="bg-dark text-light p-5">
+  <div class="container">
+    <h2 class="text-center mb-4">Contact Me</h2>
+    <form id="contact-form" class="w-100 w-md-75 w-lg-50 mx-auto">
+      <div class="mb-3">
+        <label>Full name</label>
+        <input type="text" id="name" class="form-control" style="border-radius: 100px;" placeholder="Your Name" required>
+      </div>
+      <div class="mb-3">
+        <label>Email</label>
+        <input type="email" id="email" class="form-control" style="border-radius: 100px;" placeholder="Your Email" required>
+      </div>
+      <div class="mb-3">
+        <label>Message</label>
+        <textarea id="message" class="form-control" rows="4" placeholder="Your Message" required></textarea>
+      </div>
+      <button type="submit" class="btn w-100 border" style="border-radius: 100px;">Send</button>
+    </form>
+  </div>
+</section>
+
+  <footer class="bg-dark text-white text-center p-3 font-awesome">
+    <h1>THANKYOU </h1>
+    <p class="mb-0">&copy; 2025 Afrah | All Rights Reserved</p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+
+  (function () {
+    emailjs.init("LmYCa_nsdjDcH3Vzm");
+  })();
+
+  function sendMail() {
+    var params = {
+      from_name: document.getElementById("name").value,   
+      from_email: document.getElementById("email").value, 
+      message: document.getElementById("message").value,
+    };
+
+    const serviceID = "service_f1edhxn";   
+    const templateID = "template_v9wyn84"; 
+
+    emailjs.send(serviceID, templateID, params)
+      .then((res) => {
+        document.getElementById("name").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("message").value = "";
+        alert("✅ Your message was sent successfully!");
+      })
+      .catch((err) => console.error("❌ Error:", err));
+  }
+
+  document.getElementById("contact-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    sendMail();
+  });
+</script>
+
+
+</body>
+
+</html>
+
+
+
+
+
+
+>>>>>>> 2b908bee76b188c14872450ca67378adb93ee3b3
