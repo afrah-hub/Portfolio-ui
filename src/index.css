@@ -3,36 +3,17 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --hero-glow-conic: conic-gradient(from 0deg, #a855f7, #ec4899, #3b82f6, #a855f7);
-    --hero-name-gradient-start: #7c3aed;
-    --hero-name-gradient-end: #db2777;
-  }
-
-  .dark {
-    --hero-glow-conic: conic-gradient(from 0deg, #a855f7, #06b6d4, #6366f1, #a855f7);
-    --hero-name-gradient-start: #a78bfa;
-    --hero-name-gradient-end: #22d3ee;
-  }
-
   html {
     scroll-behavior: smooth;
   }
   
   body {
     font-family: 'Inter', sans-serif;
-    @apply bg-white text-gray-900;
+    @apply bg-white text-gray-900 transition-colors duration-300;
   }
 
   .dark body {
     @apply bg-gray-900 text-gray-100;
-  }
-
-  /* Smooth 500ms color and shadow transition on theme changes */
-  body, .glass, .glass-dark, nav, section, h1, h2, h3, h4, p, span, a, button, input, textarea, select, option, img, div {
-    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, box-shadow, filter, backdrop-filter;
-    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-    transition-duration: 500ms;
   }
 }
 
@@ -61,91 +42,15 @@
   .animation-delay-4000 {
     animation-delay: 4s;
   }
-
-  .bg-hero-glow-conic {
-    background: var(--hero-glow-conic);
-  }
-
-  .animate-drift-1 {
-    animation: drift-1 25s infinite ease-in-out;
-  }
-  .animate-drift-2 {
-    animation: drift-2 28s infinite ease-in-out;
-  }
-  .animate-drift-3 {
-    animation: drift-3 22s infinite ease-in-out;
-  }
-  .animate-spin-slow {
-    animation: rotate-gradient 12s linear infinite;
-  }
-  .animate-gradient-x {
-    background-size: 200% 200%;
-    animation: gradient-x 6s ease infinite;
-  }
-  .animate-pulse-scale {
-    animation: pulse-scale 2s infinite ease-in-out;
-  }
-  .animate-float-badge {
-    animation: float-badge 4s infinite ease-in-out;
-  }
 }
 
-@keyframes drift-1 {
+@keyframes blob {
   0% { transform: translate(0px, 0px) scale(1); }
-  33% { transform: translate(40px, -40px) scale(1.08); }
-  66% { transform: translate(-20px, 30px) scale(0.92); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
   100% { transform: translate(0px, 0px) scale(1); }
 }
 
-@keyframes drift-2 {
-  0% { transform: translate(0px, 0px) scale(1); }
-  33% { transform: translate(-30px, 40px) scale(1.1); }
-  66% { transform: translate(30px, -20px) scale(0.9); }
-  100% { transform: translate(0px, 0px) scale(1); }
-}
-
-@keyframes drift-3 {
-  0% { transform: translate(0px, 0px) scale(1); }
-  33% { transform: translate(20px, 20px) scale(0.95); }
-  66% { transform: translate(-40px, -30px) scale(1.05); }
-  100% { transform: translate(0px, 0px) scale(1); }
-}
-
-@keyframes rotate-gradient {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes gradient-x {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-@keyframes pulse-scale {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-}
-
-@keyframes float-badge {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, ::before, ::after {
-    animation-delay: -1ms !important;
-    animation-duration: 1ms !important;
-    animation-iteration-count: 1 !important;
-    background-attachment: initial !important;
-    scroll-behavior: auto !important;
-    transition-duration: 0s !important;
-    transition-delay: 0s !important;
-  }
-  .animate-drift-1, .animate-drift-2, .animate-drift-3, .animate-spin-slow, .animate-gradient-x, .animate-pulse-scale, .animate-float-badge {
-    animation: none !important;
-  }
+.animate-blob {
+  animation: blob 7s infinite;
 }
