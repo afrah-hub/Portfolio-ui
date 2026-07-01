@@ -108,7 +108,7 @@ const Skills = () => {
   const { isDark } = useTheme();
 
   return (
-    <section id="skills" className="relative py-24 overflow-hidden bg-white dark:bg-gray-900 text-slate-900 dark:text-white transition-colors duration-300">
+    <section id="skills" className="relative py-24 scroll-mt-24 overflow-hidden bg-white dark:bg-gray-900 text-slate-900 dark:text-white transition-colors duration-300">
       {/* Background soft glowing tech blobs */}
       <div className="absolute top-1/4 left-1/4 w-[450px] h-[450px] bg-purple-900/5 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-1/4 right-1/4 w-[450px] h-[450px] bg-blue-900/5 rounded-full blur-[120px] pointer-events-none"></div>

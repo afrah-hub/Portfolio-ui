@@ -49,23 +49,8 @@ const Navbar = () => {
   }, []);
 
   const handleNavLinkClick = (e, linkId) => {
-    e.preventDefault();
+    // We let the browser handle the anchor navigation natively.
     setActiveSection(linkId);
-
-    if (linkId === 'home') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      const targetElement = document.getElementById(linkId);
-      if (targetElement) {
-        const offset = 85; // Offset to account for fixed navbar positioning
-        const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
-        const offsetPosition = elementPosition - offset;
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      }
-    }
 
     // Delay closing the mobile menu slightly to let the smooth scroll initiate
     // and prevent mobile browsers from aborting navigation on instant layout change.

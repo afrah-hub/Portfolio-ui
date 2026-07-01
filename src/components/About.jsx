@@ -48,7 +48,7 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="relative py-20 overflow-hidden bg-slate-50 dark:bg-gray-900 text-slate-900 dark:text-white transition-colors duration-300">
+    <section id="about" className="relative py-20 scroll-mt-24 overflow-hidden bg-slate-50 dark:bg-gray-900 text-slate-900 dark:text-white transition-colors duration-300">
       {/* Background Soft Purple Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-purple-900/5 rounded-full filter blur-[100px] pointer-events-none"></div>
 

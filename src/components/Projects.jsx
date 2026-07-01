@@ -57,7 +57,7 @@ const Projects = () => {
   });
 
   return (
-    <section id="projects" className="relative py-24 overflow-hidden bg-slate-50 dark:bg-gray-900 text-slate-900 dark:text-white transition-colors duration-300">
+    <section id="projects" className="relative py-24 scroll-mt-24 overflow-hidden bg-slate-50 dark:bg-gray-900 text-slate-900 dark:text-white transition-colors duration-300">
       {/* Background ambient radial glows */}
       <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-purple-900/5 rounded-full blur-[130px] pointer-events-none"></div>
       <div className="absolute bottom-1/3 left-1/4 w-[500px] h-[500px] bg-pink-900/5 rounded-full blur-[130px] pointer-events-none"></div>

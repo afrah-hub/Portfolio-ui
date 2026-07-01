@@ -163,7 +163,7 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300 overflow-hidden relative">
+    <section id="contact" className="py-20 scroll-mt-24 bg-white dark:bg-gray-900 transition-colors duration-300 overflow-hidden relative">
 
       {/* Breathing glow blobs */}
       <motion.div
