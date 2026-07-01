@@ -48,6 +48,27 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleNavLinkClick = (e, linkId) => {
+    e.preventDefault();
+    setActiveSection(linkId);
+    setIsOpen(false);
+
+    if (linkId === 'home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      const targetElement = document.getElementById(linkId);
+      if (targetElement) {
+        const offset = 85; // Offset to account for fixed navbar positioning
+        const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+        const offsetPosition = elementPosition - offset;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }
+  };
+
   return (
     <div className="fixed top-5 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
       <motion.nav
@@ -71,7 +92,7 @@ const Navbar = () => {
                 <a
                   key={link.name}
                   href={link.href}
-                  onClick={() => setActiveSection(link.id)}
+                  onClick={(e) => handleNavLinkClick(e, link.id)}
                   className={`px-4 py-2 text-xs font-bold uppercase tracking-wider relative transition-colors duration-300 ${
                     isActive
                       ? 'text-purple-600 dark:text-purple-300'
@@ -130,10 +151,7 @@ const Navbar = () => {
                     <a
                       key={link.name}
                       href={link.href}
-                      onClick={() => {
-                        setActiveSection(link.id);
-                        setIsOpen(false);
-                      }}
+                      onClick={(e) => handleNavLinkClick(e, link.id)}
                       className={`px-4 py-3 rounded-2xl text-xs font-extrabold uppercase tracking-widest transition-all ${
                         isActive
                           ? 'bg-gradient-to-r from-purple-500/10 to-pink-500/10 text-purple-600 dark:text-purple-300 border border-purple-500/20'
