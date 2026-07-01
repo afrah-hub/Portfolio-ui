@@ -49,14 +49,26 @@ const Navbar = () => {
   }, []);
 
   const handleNavLinkClick = (e, linkId) => {
-    // We let the browser handle the anchor navigation natively.
+    e.preventDefault();
     setActiveSection(linkId);
 
-    // Delay closing the mobile menu slightly to let the smooth scroll initiate
-    // and prevent mobile browsers from aborting navigation on instant layout change.
-    setTimeout(() => {
+    const performScroll = () => {
+      if (linkId === 'home') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        const targetElement = document.getElementById(linkId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    };
+
+    if (isOpen) {
       setIsOpen(false);
-    }, 150);
+      setTimeout(performScroll, 200);
+    } else {
+      performScroll();
+    }
   };
 
   return (
