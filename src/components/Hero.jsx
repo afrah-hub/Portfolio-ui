@@ -52,7 +52,7 @@ const Hero = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
-            className="relative w-full max-w-xs sm:max-w-sm md:max-w-none mx-auto mt-12 md:mt-0"
+            className="relative w-full max-w-[240px] sm:max-w-xs md:max-w-none mx-auto mt-8 md:mt-0"
           >
             <div className="w-full aspect-square rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-900/40 backdrop-blur-xl p-2 rotate-3 hover:rotate-0 transition-transform duration-500 shadow-2xl border border-slate-200 dark:border-purple-500/20">
                <img 
@@ -65,10 +65,10 @@ const Hero = () => {
             <motion.div 
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 3, repeat: Infinity }}
-              className="absolute -bottom-6 -right-6 bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl px-6 py-3 rounded-2xl border border-slate-200 dark:border-purple-500/30 flex items-center gap-2 shadow-xl"
+              className="absolute -bottom-4 -right-4 md:-bottom-6 md:-right-6 bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl px-4 py-2 md:px-6 md:py-3 rounded-2xl border border-slate-200 dark:border-purple-500/30 flex items-center gap-2 shadow-xl"
             >
               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-sm font-bold truncate text-slate-800 dark:text-white">Available for Hire</span>
+              <span className="text-xs md:text-sm font-bold truncate text-slate-800 dark:text-white">Available for Hire</span>
             </motion.div>
           </motion.div>
         </div>
