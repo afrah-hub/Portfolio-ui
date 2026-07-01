@@ -21,11 +21,10 @@ const Hero = () => {
               Hola!<br /> I'm <br /><span className="gradient-text">Afrah Kabeer</span>
             </h1>
             <p className="text-xl text-purple-600 font-bold mb-2 dark:text-purple-400">
-              Aspiring Full Stack Web Developer
+              Full Stack Developer
             </p>
             <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-lg leading-relaxed">
-              I am passionate about coding and building clean, responsive web applications. 
-              Currently learning React and .NET to become a world-class full-stack developer.
+              I build scalable web experiences that combine clean design with powerful engineering.
             </p>
             
             <div className="flex flex-wrap gap-6 items-center">
@@ -34,16 +33,16 @@ const Hero = () => {
               </a>
               <div className="flex space-x-6">
               <a href="https://github.com/afrah-hub" target="_blank" rel="noopener noreferrer" 
-                 className="p-3 bg-white/5 border border-white/10 rounded-full hover:bg-purple-500/20 hover:border-purple-500/50 transition-all duration-300">
-                <i className="fa-brands fa-github text-white text-xl"></i>
+                 className="p-3 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full hover:bg-purple-500/10 dark:hover:bg-purple-500/20 hover:border-purple-500/30 dark:hover:border-purple-500/50 transition-all duration-300">
+                <i className="fa-brands fa-github text-slate-700 dark:text-white text-xl"></i>
               </a>
               <a href="https://www.linkedin.com/in/afrah-tk-a3525a379/" target="_blank" rel="noopener noreferrer"
-                 className="p-3 bg-white/5 border border-white/10 rounded-full hover:bg-purple-500/20 hover:border-purple-500/50 transition-all duration-300">
-                <i className="fa-brands fa-linkedin text-white text-xl"></i>
+                 className="p-3 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full hover:bg-purple-500/10 dark:hover:bg-purple-500/20 hover:border-purple-500/30 dark:hover:border-purple-500/50 transition-all duration-300">
+                <i className="fa-brands fa-linkedin text-slate-700 dark:text-white text-xl"></i>
               </a>
               <a href="https://www.instagram.com/afrahbinthkabeer/" target="_blank" rel="noopener noreferrer"
-                 className="p-3 bg-white/5 border border-white/10 rounded-full hover:bg-purple-500/20 hover:border-purple-500/50 transition-all duration-300">
-                <i className="fa-brands fa-instagram text-white text-xl"></i>
+                 className="p-3 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full hover:bg-purple-500/10 dark:hover:bg-purple-500/20 hover:border-purple-500/30 dark:hover:border-purple-500/50 transition-all duration-300">
+                <i className="fa-brands fa-instagram text-slate-700 dark:text-white text-xl"></i>
               </a>
             </div>
             </div>
@@ -55,7 +54,7 @@ const Hero = () => {
             transition={{ duration: 0.8 }}
             className="hidden md:block relative"
           >
-            <div className="w-full aspect-square rounded-2xl overflow-hidden glass-dark p-2 rotate-3 hover:rotate-0 transition-transform duration-500 shadow-2xl border-purple-500/20">
+            <div className="w-full aspect-square rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-900/40 backdrop-blur-xl p-2 rotate-3 hover:rotate-0 transition-transform duration-500 shadow-2xl border border-slate-200 dark:border-purple-500/20">
                <img 
                  src="https://firebasestorage.googleapis.com/v0/b/dodaymessenger-2c64d.firebasestorage.app/o/profile_images%2Fafrah.jpeg?alt=media&token=942a43ec-5685-482d-90b0-758bb674bb37" 
                  alt="Afrah Kabeer" 
@@ -66,10 +65,10 @@ const Hero = () => {
             <motion.div 
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 3, repeat: Infinity }}
-              className="absolute -bottom-6 -right-6 glass-dark px-6 py-3 rounded-2xl border-purple-500/30 flex items-center gap-2"
+              className="absolute -bottom-6 -right-6 bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl px-6 py-3 rounded-2xl border border-slate-200 dark:border-purple-500/30 flex items-center gap-2 shadow-xl"
             >
               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-sm font-bold truncate">Available for Hire</span>
+              <span className="text-sm font-bold truncate text-slate-800 dark:text-white">Available for Hire</span>
             </motion.div>
           </motion.div>
         </div>

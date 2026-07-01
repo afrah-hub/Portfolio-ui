@@ -12,5 +12,6 @@ const api = axios.create({
 export const getProjects = () => api.get('/projects');
 export const getSkills = () => api.get('/skills');
 export const submitContactForm = (data) => api.post('/contact', data);
+export const getDeveloperProfile = () => api.get('/contact/profile');
 
 export default api;

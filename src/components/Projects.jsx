@@ -1,8 +1,51 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getProjects } from '../services/api';
+import { useTheme } from '../context/ThemeContext';
+
+// ─── Animation Presets ────────────────────────────────────────────────────────
+
+const headerVariants = {
+  hidden: { opacity: 0, y: -24, scale: 0.96 },
+  visible: {
+    opacity: 1, y: 0, scale: 1,
+    transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
+const dividerVariants = {
+  hidden: { scaleX: 0, opacity: 0 },
+  visible: {
+    scaleX: 1, opacity: 1,
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.15 },
+  },
+};
+
+const filterContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.05 },
+  },
+};
+
+const filterButtonVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: {
+    opacity: 1, scale: 1,
+    transition: { type: 'spring', stiffness: 260, damping: 18 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 40, scale: 0.96 },
+  visible: {
+    opacity: 1, y: 0, scale: 1,
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+  },
+};
 
 const Projects = () => {
+  const { isDark } = useTheme();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,7 +57,7 @@ const Projects = () => {
         const response = await getProjects();
         setProjects(response.data);
       } catch (err) {
-        console.error("Error fetching projects:", err);
+        console.error('Error fetching projects:', err);
         setError(err);
       } finally {
         setLoading(false);
@@ -32,7 +75,7 @@ const Projects = () => {
 
   if (loading) {
     return (
-      <section id="projects" className="relative py-24 overflow-hidden bg-gray-950 text-white">
+      <section id="projects" className="relative py-24 overflow-hidden bg-slate-50 dark:bg-gray-900 text-slate-900 dark:text-white transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
           <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tighter uppercase">
             Featured <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">Projects</span>
@@ -40,15 +83,15 @@ const Projects = () => {
           <div className="w-20 h-1 bg-gradient-to-r from-purple-600 to-pink-500 mx-auto rounded-full mb-16"></div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-pulse">
             {[1, 2, 3].map((n) => (
-              <div key={n} className="rounded-3xl bg-gray-900/20 border border-white/5 p-8 flex flex-col justify-between h-[500px]">
-                <div className="bg-white/5 rounded-2xl h-48 w-full mb-6"></div>
-                <div className="h-6 bg-white/5 rounded w-3/4 mb-4"></div>
-                <div className="h-4 bg-white/5 rounded w-full mb-3"></div>
-                <div className="h-4 bg-white/5 rounded w-5/6 mb-6"></div>
-                <div className="h-20 bg-white/5 rounded-2xl w-full mb-6"></div>
+              <div key={n} className="rounded-3xl bg-white dark:bg-gray-900/20 border border-slate-200 dark:border-white/5 p-8 flex flex-col justify-between h-[500px]">
+                <div className="bg-slate-200 dark:bg-white/5 rounded-2xl h-48 w-full mb-6"></div>
+                <div className="h-6 bg-slate-200 dark:bg-white/5 rounded w-3/4 mb-4"></div>
+                <div className="h-4 bg-slate-200 dark:bg-white/5 rounded w-full mb-3"></div>
+                <div className="h-4 bg-slate-200 dark:bg-white/5 rounded w-5/6 mb-6"></div>
+                <div className="h-20 bg-slate-200 dark:bg-white/5 rounded-2xl w-full mb-6"></div>
                 <div className="grid grid-cols-2 gap-4 mt-auto">
-                  <div className="h-10 bg-white/5 rounded-xl"></div>
-                  <div className="h-10 bg-white/5 rounded-xl"></div>
+                  <div className="h-10 bg-slate-200 dark:bg-white/5 rounded-xl"></div>
+                  <div className="h-10 bg-slate-200 dark:bg-white/5 rounded-xl"></div>
                 </div>
               </div>
             ))}
@@ -60,7 +103,7 @@ const Projects = () => {
 
   if (error) {
     return (
-      <section id="projects" className="relative py-24 overflow-hidden bg-gray-950 text-white">
+      <section id="projects" className="relative py-24 overflow-hidden bg-slate-50 dark:bg-gray-900 text-slate-900 dark:text-white transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
           <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tighter uppercase">
             Featured <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">Projects</span>
@@ -68,7 +111,7 @@ const Projects = () => {
           <div className="w-20 h-1 bg-gradient-to-r from-purple-600 to-pink-500 mx-auto rounded-full mb-16"></div>
           <div className="p-8 rounded-3xl bg-red-950/20 border border-red-500/20 text-red-400">
             <p className="font-bold">Failed to load projects</p>
-            <p className="text-sm mt-2">{error.message || "Unknown error occurred"}</p>
+            <p className="text-sm mt-2">{error.message || 'Unknown error occurred'}</p>
           </div>
         </div>
       </section>
@@ -76,46 +119,72 @@ const Projects = () => {
   }
 
   return (
-    <section id="projects" className="relative py-24 overflow-hidden bg-gray-950 text-white">
+    <section id="projects" className="relative py-24 overflow-hidden bg-slate-50 dark:bg-gray-900 text-slate-900 dark:text-white transition-colors duration-300">
       {/* Background ambient radial glows */}
       <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-purple-900/5 rounded-full blur-[130px] pointer-events-none"></div>
       <div className="absolute bottom-1/3 left-1/4 w-[500px] h-[500px] bg-pink-900/5 rounded-full blur-[130px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tighter uppercase">
-            Featured <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">Projects</span>
-          </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-purple-600 to-pink-500 mx-auto rounded-full mb-6"></div>
-          <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto font-medium">
-            Projects I have designed and developed using modern technologies
-          </p>
-        </motion.div>
 
-        {/* Filter Navigation */}
-        <div className="flex flex-wrap justify-center gap-3 mb-16">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveFilter(category)}
-              className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 select-none ${activeFilter === category
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg shadow-purple-500/20'
-                  : 'bg-white/5 border border-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
-                }`}
-            >
-              {category}
-            </button>
-          ))}
+        {/* ── Section Header ── */}
+        <div className="text-center mb-16">
+          <motion.h2
+            variants={headerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+            className="text-4xl md:text-5xl font-black mb-4 tracking-tighter uppercase"
+          >
+            Featured <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">Projects</span>
+          </motion.h2>
+          
+          <motion.div
+            variants={dividerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+            style={{ originX: 0.5 }}
+            className="w-20 h-1 bg-gradient-to-r from-purple-600 to-pink-500 mx-auto rounded-full mb-6"
+          />
+
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 }}
+            className="text-slate-600 dark:text-gray-400 text-base md:text-lg max-w-2xl mx-auto font-medium"
+          >
+            Projects I have designed and developed using modern technologies
+          </motion.p>
         </div>
 
-        {/* Projects Grid */}
+        {/* ── Filter Navigation ── */}
+        <motion.div
+          variants={filterContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          className="flex flex-wrap justify-center gap-3 mb-16"
+        >
+          {categories.map((category) => (
+            <motion.button
+              key={category}
+              variants={filterButtonVariants}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setActiveFilter(category)}
+              className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 select-none ${
+                activeFilter === category
+                  ? 'bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg shadow-purple-500/20'
+                  : 'bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-slate-600 dark:text-gray-400 hover:bg-slate-200 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              {category}
+            </motion.button>
+          ))}
+        </motion.div>
+
+        {/* ── Projects Grid ── */}
         <motion.div
           layout
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
@@ -125,11 +194,12 @@ const Projects = () => {
               <motion.div
                 key={project.id}
                 layout
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
+                variants={cardVariants}
+                initial="hidden"
+                whileInView="visible"
                 exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.4 }}
-                className="group relative rounded-3xl bg-gray-900/20 border border-white/5 backdrop-blur-xl shadow-2xl overflow-hidden hover:bg-gray-900/40 transition-colors flex flex-col justify-between h-full"
+                viewport={{ once: true, amount: 0.15 }}
+                className="group relative rounded-3xl bg-white dark:bg-gray-900/20 border border-slate-200 dark:border-white/5 backdrop-blur-xl shadow-2xl overflow-hidden hover:bg-slate-50 dark:hover:bg-gray-900/40 transition-all flex flex-col justify-between h-full"
               >
                 {/* Project Image Panel */}
                 <div className="relative h-48 sm:h-52 overflow-hidden">
@@ -150,10 +220,10 @@ const Projects = () => {
                 {/* Details Section */}
                 <div className="p-6 sm:p-8 flex-grow flex flex-col justify-between">
                   <div>
-                    <h3 className="text-xl sm:text-2xl font-black text-white mb-3 group-hover:text-purple-400 transition-colors tracking-tight uppercase">
+                    <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mb-3 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors tracking-tight uppercase">
                       {project.title}
                     </h3>
-                    <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mb-6 font-medium">
+                    <p className="text-slate-600 dark:text-gray-400 text-xs sm:text-sm leading-relaxed mb-6 font-medium">
                       {project.description}
                     </p>
 
@@ -162,10 +232,17 @@ const Projects = () => {
                       <p className="text-[10px] font-bold uppercase tracking-wider text-purple-400">Core Features</p>
                       <ul className="space-y-1.5">
                         {project.features.map((feature, fIndex) => (
-                          <li key={fIndex} className="flex items-start text-xs text-gray-300 font-semibold">
+                          <motion.li
+                            key={fIndex}
+                            initial={{ opacity: 0, x: -12 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.4, delay: 0.1 + fIndex * 0.05 }}
+                            className="flex items-start text-xs text-slate-700 dark:text-gray-300 font-semibold"
+                          >
                             <i className="fa-solid fa-circle-check text-purple-500/80 text-xs mt-0.5 mr-2"></i>
                             <span>{feature}</span>
-                          </li>
+                          </motion.li>
                         ))}
                       </ul>
                     </div>
@@ -178,15 +255,18 @@ const Projects = () => {
                       {project.techStack.map((tech, tIndex) => (
                         <motion.div
                           key={tIndex}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ type: 'spring', stiffness: 300, damping: 15, delay: tIndex * 0.04 }}
                           whileHover={{
                             scale: 1.05,
                             borderColor: tech.colorCode,
                             boxShadow: `0 0 10px ${tech.colorCode}22`,
                             backgroundColor: `${tech.colorCode}0a`,
-                            color: '#ffffff'
+                            color: isDark ? '#ffffff' : '#1e1b4b',
                           }}
-                          transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/5 text-[10px] font-bold text-gray-400 select-none cursor-default transition-colors duration-200"
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-[10px] font-bold text-slate-500 dark:text-gray-400 select-none cursor-default transition-colors duration-200"
                         >
                           <i
                             className={`${tech.icon}`}
@@ -201,22 +281,26 @@ const Projects = () => {
 
                 {/* Footer Actions */}
                 <div className="px-6 pb-6 sm:px-8 sm:pb-8 pt-0 mt-auto grid grid-cols-2 gap-4">
-                  <a
+                  <motion.a
                     href={project.liveLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-500 text-xs font-black text-white shadow-lg hover:shadow-purple-500/20 active:scale-95 transition-all select-none uppercase tracking-wider"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-500 text-xs font-black text-white shadow-lg hover:shadow-purple-500/20 transition-all select-none uppercase tracking-wider"
                   >
                     <i className="fa-solid fa-circle-play"></i> Live Demo
-                  </a>
-                  <a
+                  </motion.a>
+                  <motion.a
                     href={project.githubLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-white/5 border border-white/5 text-xs font-black text-gray-300 hover:text-white hover:bg-white/10 hover:border-white/10 active:scale-95 transition-all select-none uppercase tracking-wider"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-xs font-black text-slate-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-white/10 hover:border-slate-300 dark:hover:border-white/10 transition-all select-none uppercase tracking-wider"
                   >
                     <i className="fa-brands fa-github"></i> Repository
-                  </a>
+                  </motion.a>
                 </div>
               </motion.div>
             ))}

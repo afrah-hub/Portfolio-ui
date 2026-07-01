@@ -6,99 +6,150 @@ import { motion, AnimatePresence } from 'framer-motion';
 const Navbar = () => {
   const { isDark, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
 
+  // Nav items configuration
+  const navLinks = [
+    { name: 'Home', id: 'home', href: '#' },
+    { name: 'About', id: 'about', href: '#about' },
+    { name: 'Skills', id: 'skills', href: '#skills' },
+    { name: 'Projects', id: 'projects', href: '#projects' },
+    { name: 'Contact', id: 'contact', href: '#contact' },
+  ];
+
+  // Scroll spy to highlight active section
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 200; // Offset for trigger
+
+      // Check home section
+      if (window.scrollY < 300) {
+        setActiveSection('home');
+        return;
+      }
+
+      // Check other sections
+      const sections = ['about', 'skills', 'projects', 'contact'];
+      for (const sectionId of sections) {
+        const el = document.getElementById(sectionId);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            setActiveSection(sectionId);
+            break;
+          }
+        }
+      }
+    };
+
     window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Run initially
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { name: 'Home', href: '#' },
-    { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Contact', href: '#contact' },
-  ];
-
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'py-3 bg-gray-900/80 backdrop-blur-xl border-b border-white/10 shadow-2xl' : 'py-6 bg-transparent'}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="text-2xl font-black tracking-tighter flex items-center gap-2"
-          >
-            <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-500 rounded-lg flex items-center justify-center text-white text-base">AK</div>
-            <span className="bg-gradient-to-r from-white to-purple-400 bg-clip-text text-transparent">AFRAH KABEER</span>
-          </motion.div>
+    <div className="fixed top-5 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+      <motion.nav
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-4xl bg-white/60 dark:bg-gray-950/40 border border-slate-200/80 dark:border-white/10 shadow-[0_8px_30px_rgba(147,51,234,0.06)] dark:shadow-[0_8px_30px_rgba(147,51,234,0.12)] rounded-[32px] backdrop-blur-xl transition-all duration-300 pointer-events-auto overflow-hidden"
+      >
+        <div className="px-6 py-3 flex justify-between items-center">
+          
+          {/* LEFT: Branding name (minimalist, no icons) */}
+          <a href="#" className="text-sm md:text-base font-extrabold tracking-widest text-slate-800 dark:text-white hover:text-purple-600 dark:hover:text-purple-400 transition-colors uppercase select-none">
+            AFRAH KABEER
+          </a>
 
-          {/* Desktop Nav */}
+          {/* CENTER: Desktop Menu links */}
           <div className="hidden md:flex items-center space-x-1">
-            {navLinks.map((link) => (
-              <a 
-                key={link.name} 
-                href={link.href}
-                className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors relative group"
-              >
-                {link.name}
-                <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-gradient-to-r from-purple-600 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-              </a>
-            ))}
-            <div className="h-6 w-px bg-white/10 mx-4"></div>
-            <button 
-              onClick={toggleTheme}
-              className="p-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group"
-            >
-              {isDark ? <Sun size={18} className="text-gray-300 group-hover:text-yellow-400 transition-colors" /> : <Moon size={18} className="text-gray-300 group-hover:text-purple-400 transition-colors" />}
-            </button>
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.id;
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setActiveSection(link.id)}
+                  className={`px-4 py-2 text-xs font-bold uppercase tracking-wider relative transition-colors duration-300 ${
+                    isActive
+                      ? 'text-purple-600 dark:text-purple-300'
+                      : 'text-slate-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-white'
+                  }`}
+                >
+                  {link.name}
+                  {isActive && (
+                    <motion.span
+                      layoutId="activeTab"
+                      className="absolute bottom-0 left-4 right-4 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </a>
+              );
+            })}
           </div>
 
-          {/* Mobile Nav Toggle */}
-          <div className="md:hidden flex items-center space-x-4">
-            <button 
+          {/* RIGHT: Circular Theme Toggle & Mobile Toggle */}
+          <div className="flex items-center gap-3">
+            {/* Theme Toggle (Circular) */}
+            <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg bg-white/5 border border-white/10"
+              aria-label="Toggle Theme"
+              className="w-10 h-10 rounded-full flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200/50 dark:border-white/10 text-slate-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-yellow-400 transition-all duration-300"
             >
-              {isDark ? <Sun size={18} /> : <Moon size={18} />}
+              {isDark ? <Sun size={17} /> : <Moon size={17} />}
             </button>
-            <button 
+
+            {/* Mobile Menu Button */}
+            <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 text-gray-300 hover:text-white transition-colors"
+              aria-label="Toggle Menu"
+              className="md:hidden w-10 h-10 rounded-full flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200/50 dark:border-white/10 text-slate-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-white transition-all duration-300"
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+              {isOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
         </div>
-      </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div 
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-gray-900/95 backdrop-blur-2xl border-b border-white/10 overflow-hidden"
-          >
-            <div className="p-4 space-y-2">
-              {navLinks.map((link) => (
-                <a 
-                  key={link.name} 
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className="block p-4 text-lg font-medium text-gray-300 hover:text-white hover:bg-white/5 rounded-xl transition-all"
-                >
-                  {link.name}
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+        {/* ── MOBILE MENU ── */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="md:hidden border-t border-slate-200/50 dark:border-white/5 bg-white/70 dark:bg-gray-950/40 backdrop-blur-xl"
+            >
+              <div className="px-6 py-4 flex flex-col gap-2">
+                {navLinks.map((link) => {
+                  const isActive = activeSection === link.id;
+                  return (
+                    <a
+                      key={link.name}
+                      href={link.href}
+                      onClick={() => {
+                        setActiveSection(link.id);
+                        setIsOpen(false);
+                      }}
+                      className={`px-4 py-3 rounded-2xl text-xs font-extrabold uppercase tracking-widest transition-all ${
+                        isActive
+                          ? 'bg-gradient-to-r from-purple-500/10 to-pink-500/10 text-purple-600 dark:text-purple-300 border border-purple-500/20'
+                          : 'text-slate-600 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white border border-transparent'
+                      }`}
+                    >
+                      {link.name}
+                    </a>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.nav>
+    </div>
   );
 };
 

@@ -1,145 +1,194 @@
 import { motion } from 'framer-motion';
-import { Briefcase, GraduationCap, Rocket, Code, Layout, Lightbulb, CheckCircle } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 const About = () => {
-  const stats = [
-    { label: 'Projects Built', value: '3+' },
-    { label: 'Tech Stack', value: 'React | .NET | SQL' },
-    { label: 'Focus', value: 'Scalable Web Apps' },
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const fadeUpVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
+    }
+  };
+
+  const techTags = [
+    'React',
+    'ASP.NET Core',
+    'SQL',
+    'Tailwind CSS',
+    'Dapper'
   ];
 
   const featureCards = [
     {
-      title: 'Full Stack Expertise',
-      description: 'Designing and developing complete web solutions from frontend interfaces to backend APIs using React and .NET.',
-      icon: <Rocket className="text-purple-400" size={24} />,
-      color: 'purple'
+      num: '01',
+      title: 'Projects',
+      desc: 'CozyCrave • CottonHouse • GuideYu'
     },
     {
-      title: 'User-Centric Design',
-      description: 'Creating responsive and intuitive user experiences with a focus on usability and performance.',
-      icon: <Layout className="text-pink-400" size={24} />,
-      color: 'pink'
+      num: '02',
+      title: 'Architecture',
+      desc: 'Clean and scalable backend design'
     },
     {
-      title: 'Problem Solving',
-      description: 'Applying analytical thinking and technical skills to solve real-world problems through efficient software solutions.',
-      icon: <Lightbulb className="text-purple-400" size={24} />,
-      color: 'purple'
+      num: '03',
+      title: 'Experience',
+      desc: 'Frontend + Backend Development'
     }
   ];
 
   return (
-    <section id="about" className="relative py-24 overflow-hidden bg-gray-50 dark:bg-[#030014]">
-      {/* Background Blobs */}
-      <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-600/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
-      <div className="absolute top-0 -right-4 w-72 h-72 bg-pink-500/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+    <section id="about" className="relative py-20 overflow-hidden bg-slate-50 dark:bg-gray-900 text-slate-900 dark:text-white transition-colors duration-300">
+      {/* Background Soft Purple Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-purple-900/5 rounded-full filter blur-[100px] pointer-events-none"></div>
 
-      <div className="container mx-auto px-6 relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-20"
+      <div className="max-w-6xl mx-auto px-6 relative z-10">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
         >
-          <h2 className="text-5xl font-black mb-4 tracking-tighter text-gray-900 dark:text-white">
-            ABOUT <span className="gradient-text">ME</span>
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-purple-600 to-pink-500 mx-auto rounded-full"></div>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-[1.2fr_1fr] gap-16 items-start">
-          {/* LEFT SIDE: Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="space-y-8"
-          >
-            <div className="space-y-6">
-              <h3 className="text-4xl font-bold text-gray-900 dark:text-white leading-tight">
-                I'm <span className="text-purple-500">Afrah Kabeer</span>, Full Stack Developer crafting modern web applications.
+          {/* LEFT SIDE: Heading, Bio Paragraphs, Tech Tags, CTA Button */}
+          <div className="lg:col-span-7 space-y-6">
+            <motion.div variants={fadeUpVariants} className="space-y-3">
+              <span className="text-[11px] font-extrabold uppercase tracking-widest text-purple-400/90 block">
+                ABOUT ME
+              </span>
+              <h3 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tight leading-tight max-w-xl">
+                Building digital products with modern technologies and clean architecture.
               </h3>
-              <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl font-medium">
-                I specialize in building high-performance, full-stack applications that seamlessly bridge the gap between design and scalable engineering. 
-                With deep expertise in <span className="text-purple-500 font-bold">React</span> and <span className="text-pink-500 font-bold">Tailwind CSS</span> for the frontend, 
-                and <span className="text-purple-400 font-bold">ASP.NET Core (.NET)</span> with <span className="text-pink-400 font-bold">SQL</span> for the backend, 
-                I focus on delivering robust digital solutions that are both technically sound and user-centric.
+            </motion.div>
+
+            <motion.div variants={fadeUpVariants} className="space-y-4 text-slate-600 dark:text-gray-400 text-sm md:text-base leading-relaxed font-normal max-w-xl">
+              <p>
+                I'm Afrah Kabeer, a Full Stack Developer who transforms ideas into scalable digital experiences. 
+                I build modern web applications by combining clean frontend design with powerful backend architecture.
               </p>
-              <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl font-medium">
-                My approach is rooted in clean code, architectural integrity, and scalability. Leveraging my background in 
-                <span className="text-purple-400 font-bold"> Commerce with Computer Application</span>, 
-                I bring a strategic, analytical perspective to software development, ensuring every line of code solves a real-world problem effectively.
+              <p>
+                My expertise includes React, ASP.NET Core, SQL, and Dapper, allowing me to create complete end-to-end 
+                solutions from user interfaces to secure APIs and databases.
               </p>
-            </div>
+              <p>
+                I enjoy solving complex problems, improving application performance, and following best practices in 
+                software development. Through projects like CozyCrave, CottonHouse, and GuideYu, I focus on creating 
+                applications that are practical, responsive, and built for real users.
+              </p>
+            </motion.div>
 
-            {/* Info Badges */}
-            <div className="flex flex-wrap gap-4">
-              <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-purple-500/15 border border-purple-500/30 shadow-lg">
-                <Rocket size={18} className="text-purple-300" />
-                <span className="text-sm font-bold text-white tracking-wide">Role: Full Stack Developer</span>
+            {/* Currently Working With Badges */}
+            <motion.div variants={fadeUpVariants} className="space-y-2">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest block">
+                Currently working with
+              </span>
+              <div className="flex flex-wrap gap-2.5">
+                {techTags.map((tech, idx) => (
+                  <span
+                    key={idx}
+                    className="px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-slate-700 dark:text-gray-300 text-xs font-semibold tracking-wide hover:border-purple-500/20 hover:bg-purple-500/5 transition-all duration-300 cursor-default select-none"
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
-              <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-pink-500/15 border border-pink-500/30 shadow-lg">
-                <GraduationCap size={18} className="text-pink-300" />
-                <span className="text-sm font-bold text-white tracking-wide">Background: Commerce</span>
-              </div>
-            </div>
+            </motion.div>
 
-            {/* Mini Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-10 border-t border-white/10">
-              {stats.map((stat, i) => (
-                <div key={i} className="group cursor-default">
-                  <h4 className="text-2xl font-black text-white group-hover:text-purple-400 transition-colors uppercase tracking-tighter">{stat.value}</h4>
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-gray-500 font-black mt-1">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
+            {/* Explore My Work Button */}
+            <motion.div variants={fadeUpVariants} className="pt-2">
+              <a 
+                href="#projects" 
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-purple-600/90 hover:bg-purple-600 border border-purple-500/30 text-white text-sm font-semibold tracking-wide shadow-md transition-all duration-300"
+              >
+                Explore My Work
+                <ArrowRight size={15} />
+              </a>
+            </motion.div>
+          </div>
 
-          {/* RIGHT SIDE: Philosophy & Cards */}
+          {/* RIGHT SIDE: Creative glassmorphic profile card with code-style block */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="space-y-12"
+            variants={fadeUpVariants}
+            className="lg:col-span-5 w-full max-w-md mx-auto"
           >
-            <div>
-              <h4 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">My Philosophy</h4>
-              <div className="relative p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm overflow-hidden group shadow-2xl">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-purple-600/10 rounded-full blur-3xl group-hover:bg-purple-600/20 transition-colors duration-500"></div>
-                <p className="text-xl text-gray-700 dark:text-gray-200 leading-relaxed italic font-semibold relative z-10">
-                  "I build software that is not only functional but also scalable, maintainable, and user-focused."
-                </p>
-              </div>
-            </div>
+            <div className="bg-white/80 dark:bg-slate-950/40 backdrop-blur-md border border-slate-200 dark:border-white/5 rounded-[20px] p-6 md:p-8 flex flex-col gap-6 relative overflow-hidden group shadow-[0_0_40px_rgba(147,51,234,0.04)] dark:shadow-[0_0_40px_rgba(147,51,234,0.08)] hover:shadow-[0_0_50px_rgba(147,51,234,0.12)] dark:hover:shadow-[0_0_50px_rgba(147,51,234,0.18)] transition-all duration-500">
+              {/* Subtle top ambient glow strip */}
+              <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-purple-500/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-            {/* Feature Cards */}
-            <div className="space-y-6">
-              {featureCards.map((card, i) => (
-                <motion.div
-                  key={i}
-                  whileHover={{ scale: 1.02, x: 10 }}
-                  className="group relative p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-purple-500/40 transition-all duration-300 shadow-xl overflow-hidden"
-                >
-                   {/* Card Glow Effect */}
-                  <div className={`absolute -right-4 -top-4 w-32 h-32 bg-${card.color}-500/5 rounded-full blur-3xl group-hover:bg-${card.color}-500/15 transition-colors duration-500`}></div>
-                  
-                  <div className="flex gap-6 relative z-10">
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center border border-white/10 group-hover:border-${card.color}-500/30 transition-all duration-500 shadow-inner`}>
-                      <div className="group-hover:scale-110 transition-transform duration-500">
-                        {card.icon}
-                      </div>
+              {/* Profile Card Header */}
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600/10 to-indigo-600/10 dark:from-purple-600/20 dark:to-indigo-600/20 border border-purple-500/20 dark:border-purple-500/30 flex items-center justify-center text-slate-800 dark:text-white text-base font-bold tracking-widest select-none">
+                  AK
+                </div>
+                <div>
+                  <h4 className="text-slate-900 dark:text-white font-bold text-base tracking-tight">Afrah Kabeer</h4>
+                  <p className="text-slate-500 dark:text-gray-500 text-xs font-medium mt-0.5">Full Stack Developer</p>
+                </div>
+              </div>
+
+              {/* Code-Style Editor Block */}
+              <div className="w-full bg-[#050314]/95 p-4 rounded-xl border border-slate-200 dark:border-white/5 font-mono text-[11px] md:text-[12px] leading-relaxed shadow-inner text-white">
+                <div className="flex items-center gap-1.5 mb-2.5 border-b border-slate-200 dark:border-white/5 pb-2">
+                  <span className="w-2 h-2 rounded-full bg-red-500/40"></span>
+                  <span className="w-2 h-2 rounded-full bg-yellow-500/40"></span>
+                  <span className="w-2 h-2 rounded-full bg-green-500/40"></span>
+                  <span className="text-[10px] text-gray-500 font-semibold ml-2">developer.js</span>
+                </div>
+                <div>
+                  <span className="text-purple-400">const</span>{' '}
+                  <span className="text-blue-400">developer</span> = &#123;
+                </div>
+                <div className="pl-4">
+                  <span className="text-sky-300">role</span>: <span className="text-emerald-400">"Full Stack Developer"</span>,
+                </div>
+                <div className="pl-4">
+                  <span className="text-sky-300">frontend</span>: <span className="text-emerald-400">"React"</span>,
+                </div>
+                <div className="pl-4">
+                  <span className="text-sky-300">backend</span>: <span className="text-emerald-400">".NET"</span>,
+                </div>
+                <div className="pl-4">
+                  <span className="text-sky-300">database</span>: <span className="text-emerald-400">"SQL"</span>
+                </div>
+                <div>&#125;</div>
+              </div>
+
+              <div className="w-full border-t border-slate-200 dark:border-white/5"></div>
+
+              {/* Feature Cards block */}
+              <div className="w-full flex flex-col gap-3">
+                {featureCards.map((card, idx) => (
+                  <div 
+                    key={idx}
+                    className="p-4 rounded-xl bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/5 hover:border-purple-500/25 hover:bg-purple-500/5 transition-all duration-300 group/card flex items-center gap-4"
+                  >
+                    <div className="text-xs font-bold text-purple-400 tracking-wider font-mono">
+                      {card.num}
                     </div>
-                    <div className="flex-1">
-                      <h5 className="text-lg font-bold text-white mb-2 uppercase tracking-tighter group-hover:text-purple-400 transition-colors">{card.title}</h5>
-                      <p className="text-gray-100 text-sm leading-relaxed font-medium opacity-90 group-hover:opacity-100 transition-opacity whitespace-pre-line">{card.description}</p>
+                    <div>
+                      <div className="text-xs font-extrabold text-slate-800 dark:text-gray-300 uppercase tracking-widest">
+                        {card.title}
+                      </div>
+                      <p className="text-slate-600 dark:text-gray-400 text-[11px] md:text-xs mt-0.5 font-medium leading-relaxed">
+                        {card.desc}
+                      </p>
                     </div>
                   </div>
-                </motion.div>
-              ))}
+                ))}
+              </div>
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

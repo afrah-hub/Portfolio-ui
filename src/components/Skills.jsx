@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTheme } from '../context/ThemeContext';
 
 const skillCategories = [
   {
@@ -17,8 +18,8 @@ const skillCategories = [
       { name: 'JSX', icon: 'fa-solid fa-code', colorCode: '#00d8ff' },
       { name: 'Component Architecture', icon: 'fa-solid fa-cubes', colorCode: '#a855f7' },
       { name: 'Responsive Web Design', icon: 'fa-solid fa-mobile-screen-button', colorCode: '#10b981' },
-      { name: 'Bootstrap', icon: 'fa-brands fa-bootstrap', colorCode: '#7952b3' }
-    ]
+      { name: 'Bootstrap', icon: 'fa-brands fa-bootstrap', colorCode: '#7952b3' },
+    ],
   },
   {
     title: 'Backend Development',
@@ -35,8 +36,8 @@ const skillCategories = [
       { name: 'Dapper', icon: 'fa-solid fa-bolt', colorCode: '#f59e0b' },
       { name: 'REST API Development', icon: 'fa-solid fa-cloud-arrow-up', colorCode: '#06b6d4' },
       { name: 'API Auth & Auth', icon: 'fa-solid fa-shield-halved', colorCode: '#14b8a6' },
-      { name: 'JWT Authentication', icon: 'fa-solid fa-key', colorCode: '#d97706' }
-    ]
+      { name: 'JWT Authentication', icon: 'fa-solid fa-key', colorCode: '#d97706' },
+    ],
   },
   {
     title: 'Database & Storage',
@@ -50,8 +51,8 @@ const skillCategories = [
       { name: 'SQL Queries', icon: 'fa-solid fa-terminal', colorCode: '#3b82f6' },
       { name: 'Database Design', icon: 'fa-solid fa-sitemap', colorCode: '#10b981' },
       { name: 'CRUD Operations', icon: 'fa-solid fa-floppy-disk', colorCode: '#f59e0b' },
-      { name: 'Entity Relationships', icon: 'fa-solid fa-chart-simple', colorCode: '#6366f1' }
-    ]
+      { name: 'Entity Relationships', icon: 'fa-solid fa-chart-simple', colorCode: '#6366f1' },
+    ],
   },
   {
     title: 'Cloud & DevOps',
@@ -65,8 +66,8 @@ const skillCategories = [
       { name: 'Microsoft Azure', icon: 'fa-brands fa-microsoft', colorCode: '#0078d4' },
       { name: 'AWS', icon: 'fa-brands fa-aws', colorCode: '#ff9900' },
       { name: 'Cloud Deployment', icon: 'fa-solid fa-cloud-arrow-up', colorCode: '#0ea5e9' },
-      { name: 'Containerization', icon: 'fa-solid fa-box-archive', colorCode: '#d97706' }
-    ]
+      { name: 'Containerization', icon: 'fa-solid fa-box-archive', colorCode: '#d97706' },
+    ],
   },
   {
     title: 'Tools & Platforms',
@@ -83,8 +84,8 @@ const skillCategories = [
       { name: 'Postman', icon: 'fa-solid fa-paper-plane', colorCode: '#ff6c37' },
       { name: 'Swagger / OpenAPI', icon: 'fa-solid fa-book', colorCode: '#85ea2d' },
       { name: 'Trello', icon: 'fa-brands fa-trello', colorCode: '#0079bf' },
-      { name: 'Figma', icon: 'fa-brands fa-figma', colorCode: '#f24e1e' }
-    ]
+      { name: 'Figma', icon: 'fa-brands fa-figma', colorCode: '#f24e1e' },
+    ],
   },
   {
     title: 'Development Concepts',
@@ -98,92 +99,94 @@ const skillCategories = [
       { name: 'MVC Architecture', icon: 'fa-solid fa-network-wired', colorCode: '#10b981' },
       { name: 'API Integration', icon: 'fa-solid fa-link', colorCode: '#3b82f6' },
       { name: 'Debugging', icon: 'fa-solid fa-bug-slash', colorCode: '#ef4444' },
-      { name: 'Version Control (Git)', icon: 'fa-solid fa-code-branch', colorCode: '#eab308' }
-    ]
-  }
+      { name: 'Version Control (Git)', icon: 'fa-solid fa-code-branch', colorCode: '#eab308' },
+    ],
+  },
 ];
 
 const Skills = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5, ease: "easeOut" }
-    }
-  };
+  const { isDark } = useTheme();
 
   return (
-    <section id="skills" className="relative py-24 overflow-hidden bg-gray-950 text-white">
+    <section id="skills" className="relative py-24 overflow-hidden bg-white dark:bg-gray-900 text-slate-900 dark:text-white transition-colors duration-300">
       {/* Background soft glowing tech blobs */}
       <div className="absolute top-1/4 left-1/4 w-[450px] h-[450px] bg-purple-900/5 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-1/4 right-1/4 w-[450px] h-[450px] bg-blue-900/5 rounded-full blur-[120px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        {/* Section Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tighter uppercase">
+        
+        {/* ── Section Heading ── */}
+        <div className="text-center mb-16">
+          <motion.h2
+            initial={{ opacity: 0, y: -24, scale: 0.96 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+            className="text-4xl md:text-5xl font-black mb-4 tracking-tighter uppercase"
+          >
             Technical <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">Skills</span>
-          </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-purple-600 to-pink-500 mx-auto rounded-full mb-6"></div>
-          <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto font-medium">
-            Technologies and tools I use to build scalable applications
-          </p>
-        </motion.div>
+          </motion.h2>
 
-        {/* Categories Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            whileInView={{ scaleX: 1, opacity: 1 }}
+            viewport={{ once: true, amount: 0.5 }}
+            style={{ originX: 0.5 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            className="w-20 h-1 bg-gradient-to-r from-purple-600 to-pink-500 mx-auto rounded-full mb-6"
+          />
+
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 }}
+            className="text-slate-600 dark:text-gray-400 text-base md:text-lg max-w-2xl mx-auto font-medium"
+          >
+            Technologies and tools I use to build scalable applications
+          </motion.p>
+        </div>
+
+        {/* ── Categories Grid ── */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {skillCategories.map((category, index) => (
             <motion.div
               key={index}
-              variants={cardVariants}
+              initial={{ opacity: 0, y: 35, scale: 0.96 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: (index % 3) * 0.08 }}
               whileHover={{ y: -6, transition: { duration: 0.2 } }}
-              className="group relative p-8 rounded-3xl bg-gray-900/20 border border-white/5 backdrop-blur-xl transition-all duration-300 shadow-2xl hover:bg-gray-900/40 flex flex-col justify-between"
+              className="group relative p-8 rounded-3xl bg-slate-50 dark:bg-gray-900/20 border border-slate-200 dark:border-white/5 backdrop-blur-xl transition-all duration-300 shadow-2xl hover:bg-slate-100/50 dark:hover:bg-gray-900/40 flex flex-col justify-between"
             >
               {/* Subtle Glowing Aura */}
               <div
                 className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none blur-xl"
                 style={{
-                  background: `radial-gradient(circle at 50% 10%, ${category.glowColor} 0%, transparent 60%)`
+                  background: `radial-gradient(circle at 50% 10%, ${category.glowColor} 0%, transparent 60%)`,
                 }}
               ></div>
 
               <div>
                 {/* Category Header */}
                 <div className="flex items-center gap-4 mb-6">
-                  <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${category.gradient} border border-white/10 flex items-center justify-center shadow-lg`}>
+                  <motion.div
+                    initial={{ scale: 0, rotate: -30 }}
+                    whileInView={{ scale: 1, rotate: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ type: 'spring', stiffness: 280, damping: 18, delay: (index % 3) * 0.08 + 0.1 }}
+                    className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${category.gradient} border border-white/10 flex items-center justify-center shadow-lg`}
+                  >
                     <i className={`${category.icon} text-lg text-white`}></i>
-                  </div>
+                  </motion.div>
                   <div>
-                    <h3 className="text-lg font-bold text-white tracking-tight uppercase group-hover:text-purple-400 transition-colors">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight uppercase group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
                       {category.title}
                     </h3>
                   </div>
                 </div>
 
-                <p className="text-gray-400 text-xs mb-8 leading-relaxed font-medium">
+                <p className="text-slate-600 dark:text-gray-400 text-xs mb-8 leading-relaxed font-medium">
                   {category.description}
                 </p>
 
@@ -192,15 +195,23 @@ const Skills = () => {
                   {category.skills.map((skill, sIndex) => (
                     <motion.div
                       key={sIndex}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 300,
+                        damping: 16,
+                        delay: (index % 3) * 0.08 + 0.15 + sIndex * 0.03,
+                      }}
                       whileHover={{
                         scale: 1.05,
                         borderColor: skill.colorCode,
                         boxShadow: `0 0 15px ${skill.colorCode}22`,
                         backgroundColor: `${skill.colorCode}0a`,
-                        color: '#ffffff'
+                        color: isDark ? '#ffffff' : '#1e1b4b',
                       }}
-                      transition={{ type: 'spring', stiffness: 350, damping: 18 }}
-                      className="flex items-center gap-2.5 px-3.5 py-2 rounded-2xl bg-white/5 border border-white/5 cursor-default transition-colors text-gray-300 duration-200 select-none"
+                      className="flex items-center gap-2.5 px-3.5 py-2 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 cursor-default transition-all text-slate-700 dark:text-gray-300 duration-200 select-none"
                     >
                       <i
                         className={`${skill.icon} text-sm`}
@@ -215,7 +226,7 @@ const Skills = () => {
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
