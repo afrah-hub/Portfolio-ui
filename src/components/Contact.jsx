@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { Send, CheckCircle, Mail, User, MessageSquare, MapPin } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { submitContactForm, getDeveloperProfile } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
 // Fix Leaflet default marker icons
@@ -113,29 +112,14 @@ const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState('idle');
   const [errors, setErrors] = useState({});
-  const [profile, setProfile] = useState(null);
-  const [profileLoading, setProfileLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await getDeveloperProfile();
-        setProfile(res.data);
-      } catch {
-        setProfile({
-          name: 'Afrah Kabeer',
-          email: 'afrahkabeer321@gmail.com',
-          location: 'Malappuram, Kerala, India',
-          gitHubUrl: 'https://github.com/afrah-hub',
-          linkedInUrl: 'https://www.linkedin.com/in/afrah-tk',
-          socialEmail: 'afrahkabeer328@gmail.com',
-        });
-      } finally {
-        setProfileLoading(false);
-      }
-    };
-    fetchProfile();
-  }, []);
+  const profile = {
+    name: 'Afrah Kabeer',
+    email: 'afrahkabeer321@gmail.com',
+    location: 'Malappuram, Kerala, India',
+    gitHubUrl: 'https://github.com/afrah-hub',
+    linkedInUrl: 'https://www.linkedin.com/in/afrah-tk',
+    socialEmail: 'afrahkabeer328@gmail.com',
+  };
 
   const validate = () => {
     const errs = {};
@@ -150,18 +134,24 @@ const Contact = () => {
     return errs;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) { setErrors(validationErrors); return; }
     setErrors({});
     setStatus('sending');
+    
+    // Construct mailto link
+    const subject = `Portfolio Contact from ${formData.name}`;
+    const body = `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`;
+    
     try {
-      await submitContactForm(formData);
+      window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       setStatus('success');
       setFormData({ name: '', email: '', message: '' });
       setTimeout(() => setStatus('idle'), 5000);
-    } catch {
+    } catch (err) {
+      console.error('Mailto submission error:', err);
       setStatus('error');
       setTimeout(() => setStatus('idle'), 5000);
     }
@@ -257,12 +247,6 @@ const Contact = () => {
                   </h3>
                 </SlideLeft>
 
-                {profileLoading ? (
-                  <div className="space-y-4 animate-pulse">
-                    <div className="h-12 bg-slate-200 dark:bg-white/5 rounded-xl"></div>
-                    <div className="h-12 bg-slate-200 dark:bg-white/5 rounded-xl"></div>
-                  </div>
-                ) : (
                   <div className="space-y-4">
                     {/* Email row */}
                     <SlideLeft delay={0.14}>
@@ -272,8 +256,8 @@ const Contact = () => {
                         </div>
                         <div className="min-w-0">
                           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Email Me</p>
-                          <a href={`mailto:${profile?.email}`} className="text-sm text-slate-800 dark:text-white font-medium break-all hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
-                            {profile?.email}
+                          <a href={`mailto:${profile.email}`} className="text-sm text-slate-800 dark:text-white font-medium break-all hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                            {profile.email}
                           </a>
                         </div>
                       </div>
@@ -287,18 +271,17 @@ const Contact = () => {
                         </div>
                         <div>
                           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Location</p>
-                          <p className="text-sm text-slate-800 dark:text-white font-medium">{profile?.location}</p>
+                          <p className="text-sm text-slate-800 dark:text-white font-medium">{profile.location}</p>
                         </div>
                       </div>
                     </SlideLeft>
                   </div>
-                )}
 
                 {/* Social Buttons */}
                 <FadeUp delay={0.26} className="mt-5 pt-5 border-t border-slate-200 dark:border-white/5">
                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Find me on</p>
                   <div className="flex gap-3 flex-wrap">
-                    {profile && [
+                    {[
                       { href: profile.gitHubUrl, icon: 'fa-brands fa-github', label: 'GitHub', hover: 'hover:border-purple-500/30 hover:bg-purple-500/5 hover:text-purple-600 dark:hover:text-purple-400' },
                       { href: profile.linkedInUrl, icon: 'fa-brands fa-linkedin', label: 'LinkedIn', hover: 'hover:border-blue-500/30 hover:bg-blue-500/5 hover:text-blue-600 dark:hover:text-blue-400' },
                       { href: `mailto:${profile.socialEmail}`, icon: null, label: 'Email', hover: 'hover:border-pink-500/30 hover:bg-pink-500/5 hover:text-pink-600 dark:hover:text-pink-400' },

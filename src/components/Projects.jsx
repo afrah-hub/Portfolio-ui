@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getProjects } from '../services/api';
+import projectsData from '../data/projects';
 import { useTheme } from '../context/ThemeContext';
 
 // ─── Animation Presets ────────────────────────────────────────────────────────
@@ -46,25 +46,8 @@ const cardVariants = {
 
 const Projects = () => {
   const { isDark } = useTheme();
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const projects = projectsData;
   const [activeFilter, setActiveFilter] = useState('All');
-
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const response = await getProjects();
-        setProjects(response.data);
-      } catch (err) {
-        console.error('Error fetching projects:', err);
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProjects();
-  }, []);
 
   const categories = ['All', ...new Set(projects.flatMap(p => p.subcategories || []))];
 
@@ -72,51 +55,6 @@ const Projects = () => {
     if (activeFilter === 'All') return true;
     return project.subcategories && project.subcategories.includes(activeFilter);
   });
-
-  if (loading) {
-    return (
-      <section id="projects" className="relative py-24 overflow-hidden bg-slate-50 dark:bg-gray-900 text-slate-900 dark:text-white transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
-          <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tighter uppercase">
-            Featured <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">Projects</span>
-          </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-purple-600 to-pink-500 mx-auto rounded-full mb-16"></div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-pulse">
-            {[1, 2, 3].map((n) => (
-              <div key={n} className="rounded-3xl bg-white dark:bg-gray-900/20 border border-slate-200 dark:border-white/5 p-8 flex flex-col justify-between h-[500px]">
-                <div className="bg-slate-200 dark:bg-white/5 rounded-2xl h-48 w-full mb-6"></div>
-                <div className="h-6 bg-slate-200 dark:bg-white/5 rounded w-3/4 mb-4"></div>
-                <div className="h-4 bg-slate-200 dark:bg-white/5 rounded w-full mb-3"></div>
-                <div className="h-4 bg-slate-200 dark:bg-white/5 rounded w-5/6 mb-6"></div>
-                <div className="h-20 bg-slate-200 dark:bg-white/5 rounded-2xl w-full mb-6"></div>
-                <div className="grid grid-cols-2 gap-4 mt-auto">
-                  <div className="h-10 bg-slate-200 dark:bg-white/5 rounded-xl"></div>
-                  <div className="h-10 bg-slate-200 dark:bg-white/5 rounded-xl"></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (error) {
-    return (
-      <section id="projects" className="relative py-24 overflow-hidden bg-slate-50 dark:bg-gray-900 text-slate-900 dark:text-white transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
-          <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tighter uppercase">
-            Featured <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">Projects</span>
-          </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-purple-600 to-pink-500 mx-auto rounded-full mb-16"></div>
-          <div className="p-8 rounded-3xl bg-red-950/20 border border-red-500/20 text-red-400">
-            <p className="font-bold">Failed to load projects</p>
-            <p className="text-sm mt-2">{error.message || 'Unknown error occurred'}</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section id="projects" className="relative py-24 overflow-hidden bg-slate-50 dark:bg-gray-900 text-slate-900 dark:text-white transition-colors duration-300">
