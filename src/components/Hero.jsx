@@ -52,7 +52,7 @@ const Hero = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
-            className="hidden md:block relative"
+            className="relative w-full max-w-xs sm:max-w-sm md:max-w-none mx-auto mt-12 md:mt-0"
           >
             <div className="w-full aspect-square rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-900/40 backdrop-blur-xl p-2 rotate-3 hover:rotate-0 transition-transform duration-500 shadow-2xl border border-slate-200 dark:border-purple-500/20">
                <img 
