@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Moon, Sun, Menu, X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 
 const Navbar = () => {
   const { isDark, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const shouldReduceMotion = useReducedMotion();
 
   // Nav items configuration
   const navLinks = [
@@ -51,10 +52,10 @@ const Navbar = () => {
   return (
     <div className="fixed top-5 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
       <motion.nav
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: shouldReduceMotion ? 0 : -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full max-w-4xl bg-white/60 dark:bg-gray-950/40 border border-slate-200/80 dark:border-white/10 shadow-[0_8px_30px_rgba(147,51,234,0.06)] dark:shadow-[0_8px_30px_rgba(147,51,234,0.12)] rounded-[32px] backdrop-blur-xl transition-all duration-300 pointer-events-auto overflow-hidden"
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-4xl bg-white/20 dark:bg-gray-950/20 border border-white/20 dark:border-white/5 shadow-sm rounded-[32px] backdrop-blur-2xl transition-all duration-500 pointer-events-auto overflow-hidden"
       >
         <div className="px-6 py-3 flex justify-between items-center">
           
