@@ -51,7 +51,6 @@ const Navbar = () => {
   const handleNavLinkClick = (e, linkId) => {
     e.preventDefault();
     setActiveSection(linkId);
-    setIsOpen(false);
 
     if (linkId === 'home') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -67,6 +66,12 @@ const Navbar = () => {
         });
       }
     }
+
+    // Delay closing the mobile menu slightly to let the smooth scroll initiate
+    // and prevent mobile browsers from aborting navigation on instant layout change.
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 150);
   };
 
   return (
