@@ -30,8 +30,8 @@ const projects = [
       { name: "SQL Server", icon: "fa-solid fa-database", colorCode: "#cc292b" },
       { name: "JWT Auth", icon: "fa-solid fa-key", colorCode: "#d97706" }
     ],
-    github: "https://github.com/afrah-hub",
-    githubLink: "https://github.com/afrah-hub",
+    github: "https://github.com/afrah-hub/CozyCrave",
+    githubLink: "https://github.com/afrah-hub/CozyCrave",
     demo: "#",
     liveLink: "#"
   },
@@ -66,8 +66,8 @@ const projects = [
       { name: "REST API", icon: "fa-solid fa-cloud-arrow-up", colorCode: "#06b6d4" },
       { name: "JWT Auth", icon: "fa-solid fa-key", colorCode: "#d97706" }
     ],
-    github: "https://github.com/afrah-hub",
-    githubLink: "https://github.com/afrah-hub",
+    github: "https://github.com/afrah-hub/CottonHouse",
+    githubLink: "https://github.com/afrah-hub/CottonHouse",
     demo: "#",
     liveLink: "#"
   },
@@ -99,10 +99,10 @@ const projects = [
       { name: "SQL Server", icon: "fa-solid fa-database", colorCode: "#cc292b" },
       { name: "REST API", icon: "fa-solid fa-cloud-arrow-up", colorCode: "#06b6d4" }
     ],
-    github: "https://github.com/afrah-hub",
-    githubLink: "https://github.com/afrah-hub",
-    demo: "#",
-    liveLink: "#"
+    github: "https://github.com/afrah-hub/GuideYu",
+    githubLink: "https://github.com/afrah-hub/GuideYu",
+    demo: "https://guideyu.vercel.app/",
+    liveLink: "https://guideyu.vercel.app/"
   }
 ];
 
