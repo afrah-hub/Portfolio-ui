@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { ArrowRight, Download, Database, Check } from 'lucide-react';
 
 // Custom Typewriter Component for a lightweight, customizable typing effect
@@ -41,6 +41,50 @@ const Typewriter = ({ phrases, typingSpeed = 70, deletingSpeed = 40, delayBetwee
 
 const Hero = () => {
   const [isDownloaded, setIsDownloaded] = useState(false);
+
+  // Parallax mouse movements tracking
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Spring options for ultra-smooth easing
+  const springConfig = { damping: 50, stiffness: 150, mass: 0.5 };
+  const smoothMouseX = useSpring(mouseX, springConfig);
+  const smoothMouseY = useSpring(mouseY, springConfig);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const { innerWidth, innerHeight } = window;
+      // Coordinates normalized relative to viewport center, from -0.5 to 0.5
+      const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
+      const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
+      mouseX.set(x);
+      mouseY.set(y);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
+
+  // Transformed values for parallax depth layers
+  // Layer 1 (Deep background): Perspective grid rotation/tilt
+  const gridRotateX = useTransform(smoothMouseY, [-1, 1], [50, 60]);
+  const gridRotateY = useTransform(smoothMouseX, [-1, 1], [-6, 6]);
+
+  // Layer 2 (Blobs): Slight move opposite to cursor
+  const blobX1 = useTransform(smoothMouseX, [-1, 1], [-20, 20]);
+  const blobY1 = useTransform(smoothMouseY, [-1, 1], [-20, 20]);
+  const blobX2 = useTransform(smoothMouseX, [-1, 1], [30, -30]);
+  const blobY2 = useTransform(smoothMouseY, [-1, 1], [30, -30]);
+
+  // Layer 3 (Floating 3D rings/spheres): Moderate move in direction of cursor
+  const shapeX1 = useTransform(smoothMouseX, [-1, 1], [40, -40]);
+  const shapeY1 = useTransform(smoothMouseY, [-1, 1], [40, -40]);
+  const shapeX2 = useTransform(smoothMouseX, [-1, 1], [-30, 30]);
+  const shapeY2 = useTransform(smoothMouseY, [-1, 1], [-30, 30]);
+
+  // Layer 4 (Image Card Tilt): Pitch & Roll relative to cursor
+  const cardRotateX = useTransform(smoothMouseY, [-1, 1], [12, -12]); // tilts on X axis (up/down)
+  const cardRotateY = useTransform(smoothMouseX, [-1, 1], [-12, 12]); // tilts on Y axis (left/right)
 
   const handleDownloadCV = () => {
     setIsDownloaded(true);
@@ -101,45 +145,96 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden bg-white dark:bg-gray-900 transition-colors duration-300">
-      {/* Background Animated Glow Blobs */}
+      {/* 3D Perspective Grid Floor */}
+      <div 
+        className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0"
+        style={{ perspective: "1200px", perspectiveOrigin: "50% 30%" }}
+      >
+        <motion.div
+          style={{
+            rotateX: gridRotateX,
+            rotateY: gridRotateY,
+            transformStyle: "preserve-3d",
+          }}
+          className="absolute inset-x-0 -top-[20%] w-full h-[150%] origin-top opacity-[0.08] dark:opacity-[0.14] transition-opacity duration-500"
+        >
+          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="grid-3d" width="80" height="80" patternUnits="userSpaceOnUse">
+                <path d="M 80 0 L 0 0 0 80" fill="none" className="stroke-purple-600 dark:stroke-purple-500" strokeWidth="1.5" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid-3d)" />
+          </svg>
+        </motion.div>
+      </div>
+
+      {/* Background Animated Glow Blobs (Layer 2) */}
+      <motion.div style={{ x: blobX1, y: blobY1 }} className="absolute inset-0 w-full h-full pointer-events-none z-0">
+        <motion.div
+          animate={{
+            x: [0, 40, -20, 0],
+            y: [0, -40, 30, 0],
+            scale: [1, 1.1, 0.95, 1],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute top-[5%] -left-10 w-80 h-80 md:w-[450px] md:h-[450px] bg-purple-500/10 dark:bg-purple-600/15 rounded-full filter blur-3xl"
+        />
+        <motion.div
+          animate={{
+            x: [0, -50, 30, 0],
+            y: [0, 40, -20, 0],
+            scale: [1, 0.95, 1.05, 1],
+          }}
+          transition={{
+            duration: 22,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute top-[10%] -right-10 w-80 h-80 md:w-[450px] md:h-[450px] bg-pink-500/10 dark:bg-pink-500/15 rounded-full filter blur-3xl"
+        />
+      </motion.div>
+
+      <motion.div style={{ x: blobX2, y: blobY2 }} className="absolute inset-0 w-full h-full pointer-events-none z-0">
+        <motion.div
+          animate={{
+            x: [0, 30, -30, 0],
+            y: [0, 20, -40, 0],
+            scale: [1, 1.05, 0.95, 1],
+          }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute bottom-[-10%] left-[20%] w-80 h-80 md:w-[400px] md:h-[400px] bg-purple-400/10 dark:bg-purple-400/10 rounded-full filter blur-3xl"
+        />
+      </motion.div>
+
+      {/* Floating 3D Geometric Elements (Layer 3) */}
       <motion.div
-        animate={{
-          x: [0, 50, -30, 0],
-          y: [0, -50, 40, 0],
-          scale: [1, 1.15, 0.9, 1],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="absolute top-[5%] -left-10 w-80 h-80 md:w-[450px] md:h-[450px] bg-purple-500/10 dark:bg-purple-600/15 rounded-full filter blur-3xl pointer-events-none z-0"
+        style={{ x: shapeX1, y: shapeY1 }}
+        animate={{ rotate: 360 }}
+        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+        className="absolute top-[12%] right-[8%] w-56 h-56 rounded-full border-[10px] border-double border-purple-500/10 dark:border-purple-400/15 pointer-events-none z-0 hidden md:block"
       />
+
       <motion.div
-        animate={{
-          x: [0, -60, 40, 0],
-          y: [0, 50, -30, 0],
-          scale: [1, 0.9, 1.1, 1],
-        }}
-        transition={{
-          duration: 22,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="absolute top-[10%] -right-10 w-80 h-80 md:w-[450px] md:h-[450px] bg-pink-500/10 dark:bg-pink-500/15 rounded-full filter blur-3xl pointer-events-none z-0"
+        style={{ x: shapeX2, y: shapeY2 }}
+        animate={{ y: [0, -12, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-[35%] left-[4%] w-36 h-36 rounded-full bg-gradient-to-tr from-pink-500/5 to-purple-500/10 dark:from-pink-500/10 dark:to-purple-500/15 blur-[1px] border border-white/20 dark:border-purple-500/10 shadow-lg pointer-events-none z-0 hidden md:block"
       />
+
       <motion.div
-        animate={{
-          x: [0, 40, -40, 0],
-          y: [0, 30, -50, 0],
-          scale: [1, 1.1, 0.95, 1],
-        }}
-        transition={{
-          duration: 18,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="absolute bottom-[-10%] left-[20%] w-80 h-80 md:w-[400px] md:h-[400px] bg-purple-400/10 dark:bg-purple-400/10 rounded-full filter blur-3xl pointer-events-none z-0"
+        style={{ x: shapeX1, y: shapeY2 }}
+        animate={{ rotate: -360 }}
+        transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+        className="absolute bottom-[15%] right-[12%] w-28 h-28 rounded-full border-[6px] border-dashed border-pink-500/10 dark:border-pink-400/15 pointer-events-none z-0 hidden md:block"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
@@ -294,25 +389,36 @@ const Hero = () => {
           {/* Right Column: Profile Image & Floating Elements */}
           <div className="lg:col-span-5 relative w-full flex justify-center mt-12 lg:mt-0 select-none">
 
-            {/* Entrance wrapper for Right Column */}
+            {/* Entrance wrapper for Right Column with Perspective */}
             <motion.div
               variants={imageContainerVariants}
               initial="hidden"
               animate="visible"
+              style={{ perspective: "1200px", transformStyle: "preserve-3d" }}
               className="relative w-full max-w-[280px] sm:max-w-xs md:max-w-[340px]"
             >
-              {/* Infinite vertical float */}
+              {/* Infinite vertical float + 3D Mouse tilt */}
               <motion.div
                 animate={{ y: [0, -12, 0] }}
+                style={{
+                  rotateX: cardRotateX,
+                  rotateY: cardRotateY,
+                  transformStyle: "preserve-3d",
+                }}
                 transition={{
-                  duration: 6,
-                  repeat: Infinity,
-                  ease: "easeInOut"
+                  y: {
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }
                 }}
                 className="relative"
               >
                 {/* Premium Gradient Border Frame & Glassmorphism Container */}
-                <div className="relative p-[3px] rounded-[2.5rem] overflow-hidden shadow-2xl group transition-all duration-500">
+                <div 
+                  style={{ z: 15 }}
+                  className="relative p-[3px] rounded-[2.5rem] overflow-hidden shadow-2xl group transition-all duration-500"
+                >
                   {/* Soft Gradient Border Animation */}
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 animate-border-glow bg-[size:200%_auto] z-0"></div>
 
@@ -332,6 +438,7 @@ const Hero = () => {
                 <motion.div
                   custom={0}
                   variants={cardVariants}
+                  style={{ z: 45 }}
                   className="absolute top-[5%] -left-[12%] sm:-left-[15%] lg:-left-[18%] z-20 cursor-default"
                 >
                   <motion.div
@@ -352,6 +459,7 @@ const Hero = () => {
                 <motion.div
                   custom={1}
                   variants={cardVariants}
+                  style={{ z: 45 }}
                   className="absolute top-[18%] -right-[10%] sm:-right-[12%] lg:-right-[15%] z-20 cursor-default"
                 >
                   <motion.div
@@ -373,6 +481,7 @@ const Hero = () => {
                 <motion.div
                   custom={2}
                   variants={cardVariants}
+                  style={{ z: 45 }}
                   className="absolute bottom-[15%] -right-[12%] sm:-right-[15%] lg:-right-[18%] z-20 cursor-default"
                 >
                   <motion.div
@@ -394,6 +503,7 @@ const Hero = () => {
                 <motion.div
                   custom={3}
                   variants={cardVariants}
+                  style={{ z: 45 }}
                   className="absolute bottom-[40%] -left-[14%] sm:-left-[18%] lg:-left-[22%] z-20 cursor-default"
                 >
                   <motion.div
@@ -415,6 +525,7 @@ const Hero = () => {
                 <motion.div
                   custom={4}
                   variants={cardVariants}
+                  style={{ z: 45 }}
                   className="absolute bottom-[5%] -left-[8%] sm:-left-[10%] lg:-left-[12%] z-20 cursor-default"
                 >
                   <motion.div
