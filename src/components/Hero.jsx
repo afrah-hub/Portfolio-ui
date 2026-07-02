@@ -264,7 +264,7 @@ const Hero = () => {
               variants={itemVariants}
               className="text-base md:text-lg font-semibold tracking-wider text-purple-600 dark:text-purple-400 uppercase mb-2"
             >
-              Hello, I'm
+              Hola, I'm
             </motion.p>
 
             {/* Name */}
