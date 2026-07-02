@@ -146,7 +146,7 @@ const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden bg-white dark:bg-gray-900 transition-colors duration-300">
       {/* 3D Perspective Grid Floor */}
-      <div 
+      <div
         className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0"
         style={{ perspective: "1200px", perspectiveOrigin: "50% 30%" }}
       >
@@ -327,13 +327,12 @@ const Hero = () => {
                 <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
               </a>
 
-              <a 
-                href="/Afrah_Resume.pdf" 
+              <a
+                href="/Afrah_Resume.pdf"
                 download="Afrah_Resume.pdf"
                 onClick={handleDownloadCV}
-                className={`btn-premium-secondary inline-flex items-center gap-2 group transition-all duration-300 ${
-                  isDownloaded ? 'border-emerald-500/50 dark:border-emerald-500/40 text-emerald-600 dark:text-emerald-400' : ''
-                }`}
+                className={`btn-premium-secondary inline-flex items-center gap-2 group transition-all duration-300 ${isDownloaded ? 'border-emerald-500/50 dark:border-emerald-500/40 text-emerald-600 dark:text-emerald-400' : ''
+                  }`}
               >
                 {isDownloaded ? (
                   <>
@@ -415,7 +414,7 @@ const Hero = () => {
                 className="relative"
               >
                 {/* Premium Gradient Border Frame & Glassmorphism Container */}
-                <div 
+                <div
                   style={{ z: 15 }}
                   className="relative p-[3px] rounded-[2.5rem] overflow-hidden shadow-2xl group transition-all duration-500"
                 >

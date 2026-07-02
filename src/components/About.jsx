@@ -1,7 +1,38 @@
-import { motion } from 'framer-motion';
+import { useEffect } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
 const About = () => {
+  // Parallax mouse movements tracking
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Spring options for ultra-smooth easing
+  const springConfig = { damping: 50, stiffness: 150, mass: 0.5 };
+  const smoothMouseX = useSpring(mouseX, springConfig);
+  const smoothMouseY = useSpring(mouseY, springConfig);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const { innerWidth, innerHeight } = window;
+      const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
+      const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
+      mouseX.set(x);
+      mouseY.set(y);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
+
+  // Transformed values for parallax grid floor
+  const gridRotateX = useTransform(smoothMouseY, [-1, 1], [50, 60]);
+  const gridRotateY = useTransform(smoothMouseX, [-1, 1], [-6, 6]);
+
+  // Card Tilt values
+  const cardRotateX = useTransform(smoothMouseY, [-1, 1], [10, -10]);
+  const cardRotateY = useTransform(smoothMouseX, [-1, 1], [-10, 10]);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -49,6 +80,30 @@ const About = () => {
 
   return (
     <section id="about" className="relative py-20 scroll-mt-24 overflow-hidden bg-slate-50 dark:bg-gray-900 text-slate-900 dark:text-white transition-colors duration-300">
+      {/* 3D Perspective Grid Floor */}
+      <div 
+        className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0"
+        style={{ perspective: "1200px", perspectiveOrigin: "50% 30%" }}
+      >
+        <motion.div
+          style={{
+            rotateX: gridRotateX,
+            rotateY: gridRotateY,
+            transformStyle: "preserve-3d",
+          }}
+          className="absolute inset-x-0 -top-[20%] w-full h-[150%] origin-top opacity-[0.05] dark:opacity-[0.1] transition-opacity duration-500"
+        >
+          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="grid-3d-about" width="80" height="80" patternUnits="userSpaceOnUse">
+                <path d="M 80 0 L 0 0 0 80" fill="none" className="stroke-purple-600 dark:stroke-purple-500" strokeWidth="1.5" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid-3d-about)" />
+          </svg>
+        </motion.div>
+      </div>
+
       {/* Background Soft Purple Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-purple-900/5 rounded-full filter blur-[100px] pointer-events-none"></div>
 
@@ -119,9 +174,17 @@ const About = () => {
           {/* RIGHT SIDE: Creative glassmorphic profile card with code-style block */}
           <motion.div
             variants={fadeUpVariants}
+            style={{ perspective: "1200px", transformStyle: "preserve-3d" }}
             className="lg:col-span-5 w-full max-w-md mx-auto"
           >
-            <div className="bg-white/80 dark:bg-slate-950/40 backdrop-blur-md border border-slate-200 dark:border-white/5 rounded-[20px] p-6 md:p-8 flex flex-col gap-6 relative overflow-hidden group shadow-[0_0_40px_rgba(147,51,234,0.04)] dark:shadow-[0_0_40px_rgba(147,51,234,0.08)] hover:shadow-[0_0_50px_rgba(147,51,234,0.12)] dark:hover:shadow-[0_0_50px_rgba(147,51,234,0.18)] transition-all duration-500">
+            <motion.div 
+              style={{
+                rotateX: cardRotateX,
+                rotateY: cardRotateY,
+                transformStyle: "preserve-3d",
+              }}
+              className="bg-white/80 dark:bg-slate-950/40 backdrop-blur-md border border-slate-200 dark:border-white/5 rounded-[20px] p-6 md:p-8 flex flex-col gap-6 relative overflow-hidden group shadow-[0_0_40px_rgba(147,51,234,0.04)] dark:shadow-[0_0_40px_rgba(147,51,234,0.08)] hover:shadow-[0_0_50px_rgba(147,51,234,0.12)] dark:hover:shadow-[0_0_50px_rgba(147,51,234,0.18)] transition-all duration-500"
+            >
               {/* Subtle top ambient glow strip */}
               <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-purple-500/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
@@ -186,7 +249,7 @@ const About = () => {
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         </motion.div>
       </div>

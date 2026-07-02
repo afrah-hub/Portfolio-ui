@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Send, CheckCircle, Mail, User, MessageSquare, MapPin } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
@@ -45,6 +45,48 @@ const ThemeAwareTileLayer = ({ isDark }) => {
 };
 
 const MALAPPURAM_COORDS = [11.0509, 76.0711];
+
+// Lightweight interactive hover 3D tilt card component
+const TiltCard = ({ children, className, style, ...props }) => {
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const box = card.getBoundingClientRect();
+    const x = e.clientX - box.left - box.width / 2;
+    const y = e.clientY - box.top - box.height / 2;
+    
+    // Max 10 degrees tilt
+    const factorX = -(y / (box.height / 2)) * 10;
+    const factorY = (x / (box.width / 2)) * 10;
+    
+    setRotateX(factorX);
+    setRotateY(factorY);
+  };
+
+  const handleMouseLeave = () => {
+    setRotateX(0);
+    setRotateY(0);
+  };
+
+  return (
+    <motion.div
+      style={{
+        ...style,
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={className}
+      {...props}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 const availableFor = [
   'Full Stack Development',
@@ -109,6 +151,33 @@ const PopIn = ({ children, delay = 0, className = '' }) => (
 
 const Contact = () => {
   const { isDark } = useTheme();
+
+  // Parallax mouse movements tracking
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Spring options for ultra-smooth easing
+  const springConfig = { damping: 50, stiffness: 150, mass: 0.5 };
+  const smoothMouseX = useSpring(mouseX, springConfig);
+  const smoothMouseY = useSpring(mouseY, springConfig);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const { innerWidth, innerHeight } = window;
+      const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
+      const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
+      mouseX.set(x);
+      mouseY.set(y);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
+
+  // Transformed values for parallax grid floor
+  const gridRotateX = useTransform(smoothMouseY, [-1, 1], [50, 60]);
+  const gridRotateY = useTransform(smoothMouseX, [-1, 1], [-6, 6]);
+
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState('idle');
   const [errors, setErrors] = useState({});
@@ -164,6 +233,29 @@ const Contact = () => {
 
   return (
     <section id="contact" className="py-20 scroll-mt-24 bg-white dark:bg-gray-900 transition-colors duration-300 overflow-hidden relative">
+      {/* 3D Perspective Grid Floor */}
+      <div 
+        className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0"
+        style={{ perspective: "1200px", perspectiveOrigin: "50% 30%" }}
+      >
+        <motion.div
+          style={{
+            rotateX: gridRotateX,
+            rotateY: gridRotateY,
+            transformStyle: "preserve-3d",
+          }}
+          className="absolute inset-x-0 -top-[20%] w-full h-[150%] origin-top opacity-[0.05] dark:opacity-[0.1] transition-opacity duration-500"
+        >
+          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="grid-3d-contact" width="80" height="80" patternUnits="userSpaceOnUse">
+                <path d="M 80 0 L 0 0 0 80" fill="none" className="stroke-purple-600 dark:stroke-purple-500" strokeWidth="1.5" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid-3d-contact)" />
+          </svg>
+        </motion.div>
+      </div>
 
       {/* Breathing glow blobs */}
       <motion.div
@@ -236,7 +328,10 @@ const Contact = () => {
 
             {/* Contact Info Card — slides from left */}
             <SlideLeft delay={0}>
-              <div className="bg-slate-50 dark:bg-gray-900/50 border border-slate-200 dark:border-white/10 rounded-2xl p-6 relative overflow-hidden shadow-xl group">
+              <TiltCard 
+                style={{ perspective: "1000px" }}
+                className="bg-slate-50 dark:bg-gray-900/50 border border-slate-200 dark:border-white/10 rounded-2xl p-6 relative overflow-hidden shadow-xl group"
+              >
                 <div className="absolute -top-12 -right-12 w-32 h-32 bg-purple-600/10 rounded-full blur-2xl group-hover:bg-purple-600/20 transition-colors duration-500 pointer-events-none"></div>
 
                 {/* Card title */}
@@ -305,7 +400,7 @@ const Contact = () => {
                     ))}
                   </div>
                 </FadeUp>
-              </div>
+              </TiltCard>
             </SlideLeft>
 
             {/* Map — blurs + fades in */}
@@ -337,7 +432,10 @@ const Contact = () => {
 
             {/* Available For card */}
             <FadeUp delay={0}>
-              <div className="bg-slate-50 dark:bg-gray-900/50 border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-xl">
+              <TiltCard 
+                style={{ perspective: "1000px" }}
+                className="bg-slate-50 dark:bg-gray-900/50 border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-xl"
+              >
                 <SlideLeft delay={0.05}>
                   <h4 className="text-xs font-extrabold uppercase tracking-widest text-purple-400 mb-4">
                     Available For
@@ -366,7 +464,7 @@ const Contact = () => {
                     </motion.li>
                   ))}
                 </ul>
-              </div>
+              </TiltCard>
             </FadeUp>
 
           </div>
@@ -376,7 +474,10 @@ const Contact = () => {
 
             {/* Form Card — slides from right */}
             <SlideRight delay={0}>
-              <div className="bg-slate-50 dark:bg-gray-900/50 border border-slate-200 dark:border-white/10 rounded-2xl p-6 md:p-8 shadow-xl relative overflow-hidden">
+              <TiltCard 
+                style={{ perspective: "1000px" }}
+                className="bg-slate-50 dark:bg-gray-900/50 border border-slate-200 dark:border-white/10 rounded-2xl p-6 md:p-8 shadow-xl relative overflow-hidden"
+              >
                 <div className="absolute -top-16 -right-16 w-48 h-48 bg-purple-600/5 dark:bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
                 {/* Form title */}
@@ -517,7 +618,7 @@ const Contact = () => {
                     </motion.p>
                   )}
                 </form>
-              </div>
+              </TiltCard>
             </SlideRight>
 
           </div>

@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 
 const skillCategories = [
@@ -104,11 +104,102 @@ const skillCategories = [
   },
 ];
 
+// Lightweight interactive hover 3D tilt card component
+const TiltCard = ({ children, className, style, ...props }) => {
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const box = card.getBoundingClientRect();
+    const x = e.clientX - box.left - box.width / 2;
+    const y = e.clientY - box.top - box.height / 2;
+    
+    // Max 12 degrees tilt
+    const factorX = -(y / (box.height / 2)) * 12;
+    const factorY = (x / (box.width / 2)) * 12;
+    
+    setRotateX(factorX);
+    setRotateY(factorY);
+  };
+
+  const handleMouseLeave = () => {
+    setRotateX(0);
+    setRotateY(0);
+  };
+
+  return (
+    <motion.div
+      style={{
+        ...style,
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={className}
+      {...props}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 const Skills = () => {
   const { isDark } = useTheme();
 
+  // Parallax mouse movements tracking
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Spring options for ultra-smooth easing
+  const springConfig = { damping: 50, stiffness: 150, mass: 0.5 };
+  const smoothMouseX = useSpring(mouseX, springConfig);
+  const smoothMouseY = useSpring(mouseY, springConfig);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const { innerWidth, innerHeight } = window;
+      const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
+      const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
+      mouseX.set(x);
+      mouseY.set(y);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
+
+  // Transformed values for parallax grid floor
+  const gridRotateX = useTransform(smoothMouseY, [-1, 1], [50, 60]);
+  const gridRotateY = useTransform(smoothMouseX, [-1, 1], [-6, 6]);
+
   return (
     <section id="skills" className="relative py-24 scroll-mt-24 overflow-hidden bg-white dark:bg-gray-900 text-slate-900 dark:text-white transition-colors duration-300">
+      {/* 3D Perspective Grid Floor */}
+      <div 
+        className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0"
+        style={{ perspective: "1200px", perspectiveOrigin: "50% 30%" }}
+      >
+        <motion.div
+          style={{
+            rotateX: gridRotateX,
+            rotateY: gridRotateY,
+            transformStyle: "preserve-3d",
+          }}
+          className="absolute inset-x-0 -top-[20%] w-full h-[150%] origin-top opacity-[0.05] dark:opacity-[0.1] transition-opacity duration-500"
+        >
+          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="grid-3d-skills" width="80" height="80" patternUnits="userSpaceOnUse">
+                <path d="M 80 0 L 0 0 0 80" fill="none" className="stroke-purple-600 dark:stroke-purple-500" strokeWidth="1.5" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid-3d-skills)" />
+          </svg>
+        </motion.div>
+      </div>
       {/* Background soft glowing tech blobs */}
       <div className="absolute top-1/4 left-1/4 w-[450px] h-[450px] bg-purple-900/5 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-1/4 right-1/4 w-[450px] h-[450px] bg-blue-900/5 rounded-full blur-[120px] pointer-events-none"></div>
@@ -150,13 +241,14 @@ const Skills = () => {
         {/* ── Categories Grid ── */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {skillCategories.map((category, index) => (
-            <motion.div
+            <TiltCard
               key={index}
               initial={{ opacity: 0, y: 35, scale: 0.96 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: (index % 3) * 0.08 }}
               whileHover={{ y: -6, transition: { duration: 0.2 } }}
+              style={{ perspective: "1000px" }}
               className="group relative p-8 rounded-3xl bg-slate-50 dark:bg-gray-900/20 border border-slate-200 dark:border-white/5 backdrop-blur-xl transition-all duration-300 shadow-2xl hover:bg-slate-100/50 dark:hover:bg-gray-900/40 flex flex-col justify-between"
             >
               {/* Subtle Glowing Aura */}
@@ -224,7 +316,7 @@ const Skills = () => {
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </TiltCard>
           ))}
         </div>
       </div>

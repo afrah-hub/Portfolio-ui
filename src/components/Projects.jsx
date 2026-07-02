@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import projectsData from '../data/projects';
 import { useTheme } from '../context/ThemeContext';
 
@@ -44,10 +44,78 @@ const cardVariants = {
   },
 };
 
+// Lightweight interactive hover 3D tilt card component
+const TiltCard = ({ children, className, style, ...props }) => {
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const box = card.getBoundingClientRect();
+    const x = e.clientX - box.left - box.width / 2;
+    const y = e.clientY - box.top - box.height / 2;
+    
+    // Max 10 degrees tilt
+    const factorX = -(y / (box.height / 2)) * 10;
+    const factorY = (x / (box.width / 2)) * 10;
+    
+    setRotateX(factorX);
+    setRotateY(factorY);
+  };
+
+  const handleMouseLeave = () => {
+    setRotateX(0);
+    setRotateY(0);
+  };
+
+  return (
+    <motion.div
+      style={{
+        ...style,
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={className}
+      {...props}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 const Projects = () => {
   const { isDark } = useTheme();
   const projects = projectsData;
   const [activeFilter, setActiveFilter] = useState('All');
+
+  // Parallax mouse movements tracking
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Spring options for ultra-smooth easing
+  const springConfig = { damping: 50, stiffness: 150, mass: 0.5 };
+  const smoothMouseX = useSpring(mouseX, springConfig);
+  const smoothMouseY = useSpring(mouseY, springConfig);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const { innerWidth, innerHeight } = window;
+      const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
+      const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
+      mouseX.set(x);
+      mouseY.set(y);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
+
+  // Transformed values for parallax grid floor
+  const gridRotateX = useTransform(smoothMouseY, [-1, 1], [50, 60]);
+  const gridRotateY = useTransform(smoothMouseX, [-1, 1], [-6, 6]);
 
   const categories = ['All', ...new Set(projects.flatMap(p => p.subcategories || []))];
 
@@ -58,9 +126,33 @@ const Projects = () => {
 
   return (
     <section id="projects" className="relative py-24 scroll-mt-24 overflow-hidden bg-slate-50 dark:bg-gray-900 text-slate-900 dark:text-white transition-colors duration-300">
-      {/* Background ambient radial glows */}
-      <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-purple-900/5 rounded-full blur-[130px] pointer-events-none"></div>
-      <div className="absolute bottom-1/3 left-1/4 w-[500px] h-[500px] bg-pink-900/5 rounded-full blur-[130px] pointer-events-none"></div>
+      {/* 3D Perspective Grid Floor */}
+      <div 
+        className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0"
+        style={{ perspective: "1200px", perspectiveOrigin: "50% 30%" }}
+      >
+        <motion.div
+          style={{
+            rotateX: gridRotateX,
+            rotateY: gridRotateY,
+            transformStyle: "preserve-3d",
+          }}
+          className="absolute inset-x-0 -top-[20%] w-full h-[150%] origin-top opacity-[0.05] dark:opacity-[0.1] transition-opacity duration-500"
+        >
+          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="grid-3d-projects" width="80" height="80" patternUnits="userSpaceOnUse">
+                <path d="M 80 0 L 0 0 0 80" fill="none" className="stroke-purple-600 dark:stroke-purple-500" strokeWidth="1.5" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid-3d-projects)" />
+          </svg>
+        </motion.div>
+      </div>
+
+      {/* Background Tech Blobs */}
+      <div className="absolute top-1/3 right-0 w-96 h-96 bg-purple-900/5 rounded-full blur-[100px] pointer-events-none"></div>
+      <div className="absolute bottom-1/3 left-0 w-96 h-96 bg-blue-900/5 rounded-full blur-[100px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
 
@@ -129,7 +221,7 @@ const Projects = () => {
         >
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, index) => (
-              <motion.div
+              <TiltCard
                 key={project.id}
                 layout
                 variants={cardVariants}
@@ -137,6 +229,7 @@ const Projects = () => {
                 whileInView="visible"
                 exit={{ opacity: 0, scale: 0.95 }}
                 viewport={{ once: true, amount: 0.15 }}
+                style={{ perspective: "1000px" }}
                 className="group relative rounded-3xl bg-white dark:bg-gray-900/20 border border-slate-200 dark:border-white/5 backdrop-blur-xl shadow-2xl overflow-hidden hover:bg-slate-50 dark:hover:bg-gray-900/40 transition-all flex flex-col justify-between h-full"
               >
                 {/* Project Image Panel */}
@@ -240,7 +333,7 @@ const Projects = () => {
                     <i className="fa-brands fa-github"></i> Repository
                   </motion.a>
                 </div>
-              </motion.div>
+              </TiltCard>
             ))}
           </AnimatePresence>
         </motion.div>
