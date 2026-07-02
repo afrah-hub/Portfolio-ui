@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Download, Database } from 'lucide-react';
+import { ArrowRight, Download, Database, Check } from 'lucide-react';
 
 // Custom Typewriter Component for a lightweight, customizable typing effect
 const Typewriter = ({ phrases, typingSpeed = 70, deletingSpeed = 40, delayBetween = 2000 }) => {
@@ -40,6 +40,15 @@ const Typewriter = ({ phrases, typingSpeed = 70, deletingSpeed = 40, delayBetwee
 };
 
 const Hero = () => {
+  const [isDownloaded, setIsDownloaded] = useState(false);
+
+  const handleDownloadCV = () => {
+    setIsDownloaded(true);
+    setTimeout(() => {
+      setIsDownloaded(false);
+    }, 4000);
+  };
+
   // Framer Motion variants for stagger entrance animation
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -223,9 +232,25 @@ const Hero = () => {
                 <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
               </a>
 
-              <a href="#about" className="btn-premium-secondary inline-flex items-center gap-2 group">
-                Download CV
-                <Download size={18} className="transition-transform duration-300 group-hover:translate-y-0.5" />
+              <a 
+                href="/Afrah_Resume.pdf" 
+                download="Afrah_Resume.pdf"
+                onClick={handleDownloadCV}
+                className={`btn-premium-secondary inline-flex items-center gap-2 group transition-all duration-300 ${
+                  isDownloaded ? 'border-emerald-500/50 dark:border-emerald-500/40 text-emerald-600 dark:text-emerald-400' : ''
+                }`}
+              >
+                {isDownloaded ? (
+                  <>
+                    CV Downloaded
+                    <Check size={18} className="text-emerald-500 animate-pulse" />
+                  </>
+                ) : (
+                  <>
+                    Download CV
+                    <Download size={18} className="transition-transform duration-300 group-hover:translate-y-0.5" />
+                  </>
+                )}
               </a>
 
               {/* Social Icons Container */}
