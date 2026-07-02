@@ -42,6 +42,32 @@
   .animation-delay-4000 {
     animation-delay: 4s;
   }
+  .animate-blink {
+    animation: blink 1s infinite;
+  }
+  .animate-border-glow {
+    animation: border-glow 8s linear infinite;
+  }
+}
+
+@layer components {
+  .btn-premium-primary {
+    @apply px-8 py-3 rounded-full bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 text-white font-bold transition-all duration-300 shadow-lg relative overflow-hidden;
+    background-size: 200% auto;
+  }
+  .btn-premium-primary:hover {
+    background-position: right center;
+    @apply -translate-y-0.5 shadow-purple-500/40;
+    box-shadow: 0 10px 25px -5px rgba(168, 85, 247, 0.5), 0 8px 10px -6px rgba(236, 72, 153, 0.5);
+  }
+
+  .btn-premium-secondary {
+    @apply px-8 py-3 rounded-full border border-slate-200 dark:border-purple-500/30 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md text-slate-800 dark:text-slate-200 font-bold transition-all duration-300;
+  }
+  .btn-premium-secondary:hover {
+    @apply -translate-y-0.5 border-purple-500/60 bg-white/60 dark:bg-slate-900/60 dark:text-white;
+    box-shadow: 0 10px 20px -10px rgba(168, 85, 247, 0.4);
+  }
 }
 
 @keyframes blob {
@@ -51,6 +77,18 @@
   100% { transform: translate(0px, 0px) scale(1); }
 }
 
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes border-glow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .animate-blob {
   animation: blob 7s infinite;
 }
+
