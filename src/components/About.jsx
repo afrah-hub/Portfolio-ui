@@ -38,12 +38,73 @@ const About = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
+        staggerChildren: 0.12,
+        delayChildren: 0.1
       }
     }
   };
 
   const fadeUpVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+    }
+  };
+
+  const tagContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08
+      }
+    }
+  };
+
+  const tagVariants = {
+    hidden: { opacity: 0, scale: 0.85, y: 15 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 100, damping: 12 }
+    }
+  };
+
+  const codeContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.4
+      }
+    }
+  };
+
+  const codeLineVariants = {
+    hidden: { opacity: 0, x: -15 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.4, ease: "easeOut" }
+    }
+  };
+
+  const featureListVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.6
+      }
+    }
+  };
+
+  const featureCardVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
@@ -104,8 +165,35 @@ const About = () => {
         </motion.div>
       </div>
 
-      {/* Background Soft Purple Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-purple-900/5 rounded-full filter blur-[100px] pointer-events-none"></div>
+      {/* Background Animated Glow Blobs (Orbs) */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+        <motion.div
+          animate={{
+            x: [0, 40, -30, 0],
+            y: [0, -50, 30, 0],
+            scale: [1, 1.2, 0.9, 1],
+          }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute top-[10%] left-[5%] w-72 h-72 bg-purple-500/5 dark:bg-purple-600/10 rounded-full filter blur-[80px]"
+        />
+        <motion.div
+          animate={{
+            x: [0, -40, 30, 0],
+            y: [0, 50, -30, 0],
+            scale: [1, 0.9, 1.15, 1],
+          }}
+          transition={{
+            duration: 22,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute bottom-[10%] right-[5%] w-80 h-80 bg-indigo-500/5 dark:bg-pink-500/10 rounded-full filter blur-[90px]"
+        />
+      </div>
 
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <motion.div
@@ -147,16 +235,21 @@ const About = () => {
               <span className="text-[10px] font-bold text-slate-400 dark:text-gray-500 uppercase tracking-widest block">
                 Currently working with
               </span>
-              <div className="flex flex-wrap gap-2.5">
+              <motion.div 
+                variants={tagContainerVariants}
+                className="flex flex-wrap gap-2.5"
+              >
                 {techTags.map((tech, idx) => (
-                  <span
+                  <motion.span
                     key={idx}
-                    className="px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-slate-700 dark:text-gray-300 text-xs font-semibold tracking-wide hover:border-purple-500/20 hover:bg-purple-500/5 transition-all duration-300 cursor-default select-none"
+                    variants={tagVariants}
+                    whileHover={{ scale: 1.08, rotate: [0, -1, 1, 0], y: -2 }}
+                    className="px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-slate-700 dark:text-gray-300 text-xs font-semibold tracking-wide hover:border-purple-500/20 dark:hover:border-purple-500/20 hover:bg-purple-500/5 dark:hover:bg-purple-500/5 transition-all duration-300 cursor-default select-none shadow-sm dark:shadow-none hover:shadow-md hover:shadow-purple-500/5"
                   >
                     {tech}
-                  </span>
+                  </motion.span>
                 ))}
-              </div>
+              </motion.div>
             </motion.div>
 
             {/* Explore My Work Button */}
@@ -207,33 +300,52 @@ const About = () => {
                   <span className="w-2 h-2 rounded-full bg-green-500/40"></span>
                   <span className="text-[10px] text-gray-500 font-semibold ml-2">developer.js</span>
                 </div>
-                <div>
-                  <span className="text-purple-400">const</span>{' '}
-                  <span className="text-blue-400">developer</span> = &#123;
-                </div>
-                <div className="pl-4">
-                  <span className="text-sky-300">role</span>: <span className="text-emerald-400">"Full Stack Developer"</span>,
-                </div>
-                <div className="pl-4">
-                  <span className="text-sky-300">frontend</span>: <span className="text-emerald-400">"React"</span>,
-                </div>
-                <div className="pl-4">
-                  <span className="text-sky-300">backend</span>: <span className="text-emerald-400">".NET"</span>,
-                </div>
-                <div className="pl-4">
-                  <span className="text-sky-300">database</span>: <span className="text-emerald-400">"SQL"</span>
-                </div>
-                <div>&#125;</div>
+                <motion.div 
+                  variants={codeContainerVariants}
+                  className="space-y-0.5"
+                >
+                  <motion.div variants={codeLineVariants}>
+                    <span className="text-purple-400">const</span>{' '}
+                    <span className="text-blue-400">developer</span> = &#123;
+                  </motion.div>
+                  <motion.div variants={codeLineVariants} className="pl-4">
+                    <span className="text-sky-300">role</span>: <span className="text-emerald-400">"Full Stack Developer"</span>,
+                  </motion.div>
+                  <motion.div variants={codeLineVariants} className="pl-4">
+                    <span className="text-sky-300">frontend</span>: <span className="text-emerald-400">"React"</span>,
+                  </motion.div>
+                  <motion.div variants={codeLineVariants} className="pl-4">
+                    <span className="text-sky-300">backend</span>: <span className="text-emerald-400">".NET"</span>,
+                  </motion.div>
+                  <motion.div variants={codeLineVariants} className="pl-4">
+                    <span className="text-sky-300">database</span>: <span className="text-emerald-400">"SQL"</span>
+                  </motion.div>
+                  <motion.div variants={codeLineVariants} className="flex items-center">
+                    <span>&#125;;</span>
+                    <span className="inline-block w-[6px] h-[12px] ml-1.5 bg-pink-500 dark:bg-purple-400 animate-blink"></span>
+                  </motion.div>
+                </motion.div>
               </div>
 
               <div className="w-full border-t border-slate-200 dark:border-white/5"></div>
 
               {/* Feature Cards block */}
-              <div className="w-full flex flex-col gap-3">
+              <motion.div 
+                variants={featureListVariants}
+                className="w-full flex flex-col gap-3"
+              >
                 {featureCards.map((card, idx) => (
-                  <div 
+                  <motion.div 
                     key={idx}
-                    className="p-4 rounded-xl bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/5 hover:border-purple-500/25 hover:bg-purple-500/5 transition-all duration-300 group/card flex items-center gap-4"
+                    variants={featureCardVariants}
+                    whileHover={{ 
+                      y: -4, 
+                      scale: 1.02,
+                      borderColor: "rgba(147, 51, 234, 0.3)",
+                      backgroundColor: "rgba(147, 51, 234, 0.04)"
+                    }}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    className="p-4 rounded-xl bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/5 hover:shadow-[0_4px_20px_-4px_rgba(147,51,234,0.1)] transition-colors duration-300 group/card flex items-center gap-4 cursor-default"
                   >
                     <div className="text-xs font-bold text-purple-400 tracking-wider font-mono">
                       {card.num}
@@ -246,9 +358,9 @@ const About = () => {
                         {card.desc}
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </motion.div>
           </motion.div>
         </motion.div>
